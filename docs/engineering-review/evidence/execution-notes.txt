@@ -1,0 +1,13 @@
+Run 1: owner heavy:filter-review; timeout120; 2GiB/32 process policy.
+RunId 5a782cc251654ad5bc48b8907a3926d2, exit1, reason=exited, cleanup=confirmed.
+Failure: importlib.metadata.PackageNotFoundError: No package metadata was found for cadquery-ocp.
+Failure location: packages metadata field, after geometry calculations, before JSON write.
+Correction: script metadata field uses imported OCP.__version__ (8.0.1.1).
+Run 2: sequential, same bounded owner and timeout; native Python exit0, 3.625 sec tool wall time.
+No input file was edited. No pytest, new services, image or STEP export.
+Portable replay: owner heavy:filter-review; timeout120; exit0; tool wall time 3.682 sec.
+Status after completion: active=[], pending=0.
+Command: & 'D:/Users/Roman/Desktop/Проекты/build123d/.venv/Scripts/python.exe' 'D:/Users/Roman/Desktop/Проекты/build123d/output/issue3-worktree/output/engineering-review/pilot-review/measure.py' 'D:/Users/Roman/Desktop/Проекты/build123d/output/issue3-worktree/output/engineering-review/pilot-input' --output-dir 'D:/Users/Roman/Desktop/Проекты/build123d/output/issue3-worktree/output/engineering-review/pilot-review/replay'
+Input unchanged; explicit output directory pilot-review/replay replaces original pilot-review destination.
+All JSON fields except script_sha256 matched exactly. Current script SHA256: 5574072a43a3116302f48a6be580619b1de8257538e617a4851fef7e5fbbc6e1
+Root measurements.json copied from replay/measurements.json. before-argv.json preserves original JSON and old script SHA d4870bc1bc2cc2a066e19c0e963ff2eaa4f65c21bae661d0d6458313802e2df5.

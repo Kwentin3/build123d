@@ -9,6 +9,13 @@ parameters, units (mm), coordinate convention and existing CLI/API. Change the
 smallest source parameter/feature that meets the task. A CLI override is a run
 variant, not a persisted source revision. Preserve unrelated model/output files.
 
+Before committing to an attachment or mating feature, establish its function
+and the counterpart/hardware contract. Record material/loads, bearing surfaces,
+dimensional limits or service assumptions only where they affect this change.
+Ask for missing critical inputs; continue independent nominal geometry work
+with explicit limits. Do not let self-chosen geometry become its own requirement.
+Use the relevant engineering reference linked by **cad-entry** when needed.
+
 Use native build123d/Open Cascade operations and existing helpers first. Keep
 parameters near the top and execution under a main guard. For a new independent
 model, create `models/<name>/model.py`, its own requirements/checks and

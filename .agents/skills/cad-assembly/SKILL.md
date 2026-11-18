@@ -8,6 +8,13 @@ definitions and validator. Identify which body moves, fixed bodies, contact
 surfaces and independent target clearances. Reuse native Locations/Planes,
 intersections and the model's existing motion checks.
 
+Derive the permitted sequence from use: which parts stay mounted, which may be
+removed, what retains them before fastening, and how the tool/operator reaches
+the joint. For service or assembly requirements, read
+[assembly and service](../cad-validation/references/assembly-service.md).
+For an attachment carrying load, use
+[attachment and load path](../cad-validation/references/attachment-load-path.md).
+
 For an existing joint, measure current geometry before proposing a local
 change. Use an isolated variant for experiments; preserve approved releases.
 Validate final placement and affected intermediate positions. Record sampling

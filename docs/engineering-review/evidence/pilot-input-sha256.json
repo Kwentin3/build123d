@@ -1,0 +1,19 @@
+{
+  "AGENTS.md": "499726d4b6ac759243eccae3c52333ac7cdc8491376f1ce818ef9fd43a9f250c",
+  "README.md": "343a0cbbc9871c3066f0aaf2aab1fbe5d79e273ade95464fa8d61562860758ab",
+  "requirements.txt": "f9d15754f3c8a6596000e976b7ccbf45a6342f713d1a01b116636b67568867e2",
+  "WORKFLOW.md": "df3aa0544be0f576101931a1505eccbae7476acca5e4e3926a3f5727b2dab743",
+  "models/filter_holder/model.py": "b8ab7d74988ae7c5a01ba8111fc12594e0e4b9eac673d8d36aba9d20402a598c",
+  "models/filter_holder/README.md": "43b25872a5a3da1418007acdb6ab2d8350873167e5048c66e648980130191884",
+  "docs/engineering-review/sources.md": "8f687182494e91ec808c21f03aa2e880e54f5c9a0fbac0d58543690eee066d63",
+  ".agents/skills/cad-assembly/SKILL.md": "8cd9a2e73bf776c6f354c7cb91012d91ab22a046af06ecef717224ea1d3a9885",
+  ".agents/skills/cad-entry/SKILL.md": "0fc6df1539257067a8814a0184fa6bf1c651e98ad4ad26be70c9395b3d043c4a",
+  ".agents/skills/cad-manufacturing/SKILL.md": "9c10daea384990575bdff806b1a6eb2c7f8798dd9e1426a68f6ff1b36ed2054d",
+  ".agents/skills/cad-modeling/SKILL.md": "7eb3fa503c7865b45a7795138b9ee9e14c11253f169db0f0366e133366dcdadf",
+  ".agents/skills/cad-validation/SKILL.md": "231ffab2117a5d575d07d1c4a4795ee687fe892110c206281495c1c79095e9b6",
+  ".agents/skills/cad-validation/references/assembly-service.md": "35ae530169c76cc68f7d6c174e5af85b2b78aa0a56888ce6b1da8212edc8c155",
+  ".agents/skills/cad-validation/references/attachment-load-path.md": "d63defe1154dbc20f644d1b3cddd2265b91a3b5770bea39a0b2e15080391b81b",
+  ".agents/skills/cad-validation/references/functional-fit.md": "5d99800900d251337e33c7529fb4d0fa4b1b5f0baf5ae322566ce92da6ff1570",
+  ".agents/skills/cad-validation/references/local-edits.md": "2d82c5402e261eaddbd46b08bec30910513f7d1b22cf6bda849eb9cbfda2c6c6",
+  ".agents/skills/cad-manufacturing/references/laser-cutting.md": "50989d73761b670f182e5353e26bf9dd5bcd010a0b0b4c602a02d96db5597e25"
+}

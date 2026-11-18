@@ -10,6 +10,22 @@ and current task first.
 Keep independent products separate; an inherited release may explicitly reuse
 older geometry. Use the installed environment; do not change build123d core.
 
+Before selecting checks, identify the affected function, its required operating
+or service state, and a plausible way it could fail. A surface type does not
+establish purpose: a round hole is not necessarily a fastener hole. Keep the
+function/requirement, assumptions and evidence in the existing model task or
+README, not a second registry. For an ordinary local edit, cover only affected
+functions and protected behaviour.
+
+Read only the relevant engineering reference when the task needs it:
+- Load-bearing attachment/retention or a cut affecting its support:
+  [attachment and load path](../cad-validation/references/attachment-load-path.md).
+- A mating interface whose motion or retention depends on dimensions:
+  [functional fit](../cad-validation/references/functional-fit.md).
+- Installation, removal, tool access or maintenance:
+  [assembly and service](../cad-validation/references/assembly-service.md).
+Manufacturing checks remain process-specific in **cad-manufacturing**.
+
 For a small edit, load **cad-modeling** and **cad-validation** only. For joints,
 placement, interference or motion, load **cad-assembly**. Load **cad-manufacturing**
 only for process choice or production output. Each lives beside this directory,
