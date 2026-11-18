@@ -15,7 +15,8 @@ placement, interference or motion, load **cad-assembly**. Load **cad-manufacturi
 only for process choice or production output. Each lives beside this directory,
 in `../<skill-name>/SKILL.md`. Do not read all skills or all model READMEs.
 Read [WORKFLOW.md](../../../WORKFLOW.md) when planning a new design or a release;
-a local parameter edit only needs its affected steps.
+a local parameter edit only needs its affected steps. When delegating a bounded
+task, read its section on transferring work; reuse native subagents and files.
 
 Tools compute; skills guide their use. Existing model CLIs and model-owned
 validators are the tools. Read the report's measurements, failed checks and
