@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "CAD: model + viewer",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/models/plate/model.py",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["--show"],
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "CAD: gear + viewer",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/models/gear/model.py",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["--show"],
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ]
+}
