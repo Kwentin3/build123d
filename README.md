@@ -21,6 +21,7 @@ models/
   mangal_wedge/   # исследование механики клинового узла
   mangal_v2/      # следующая конструкция, выпуск 2.0
   mangal_v21/     # выпуск 2.1: пять деталей, без чек
+  clock_family/   # три прототипа корпусов для TFA 60.3065.02 (issue #1)
 tests/            # тесты пластины; остальные тесты лежат рядом с моделями
 .agents/skills/   # cad-entry, cad-modeling, cad-validation,
                   # cad-assembly, cad-manufacturing
@@ -34,12 +35,17 @@ requirements.txt  # точные версии общего Python-окружен
 Для запуска сохраняй дерево `models/` целиком. Требования и ограничения изделия
 описаны в его README: [пластина](#первый-запуск), [шестерня](models/gear/README.md),
 [мангал](models/mangal/README.md), [клин](models/mangal_wedge/README.md),
-[2.0](models/mangal_v2/README.md), [2.1](models/mangal_v21/README.md).
+[2.0](models/mangal_v2/README.md), [2.1](models/mangal_v21/README.md),
+[корпуса часов](models/clock_family/README.md).
 
 [Примеры](output/examples/README.md) содержат датированные PDF/PNG и переносимые
 `example-report.json` для пластины и мангала 2.1. Это исторические демонстрации,
 а не свежая приёмка твоего окружения. Обычные результаты `output/<name>/`,
 локальные evidence, `.venv/` и кэши в Git не включены.
+
+[Снимок эксперимента с часами](output/examples/clock_family/README.md) содержит
+архив STEP/STL, отчётов и изображений трёх номинальных прототипов от 18 ноября
+2026 года. Реальная посадка штатного кольца и физические свойства не аттестованы.
 
 ## Установка на Windows
 
