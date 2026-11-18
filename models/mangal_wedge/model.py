@@ -30,13 +30,91 @@ def _csv(path,rows,keys):
         w.writeheader();w.writerows(rows)
 
 
-def run(output_dir=OUT):
+def _reference_inputs(reference_dir):
+    """Check the original model's receipts and measured evidence before reuse.
+
+    These unsigned receipts establish freshness and consistency, not authenticity.
+    """
+    reference=Path(reference_dir)
+    raw={name:(reference/name).read_bytes() for name in ('report.json','bom.json')}
+    report=json.loads(raw['report.json'])
+    bom=json.loads(raw['bom.json'])
+    sources={f.name:hashlib.sha256(f.read_bytes()).hexdigest()
+             for f in (ROOT/'models'/'mangal').glob('*.py')}
+    if not sources or report['source_sha256']!=sources:
+        raise ValueError('Original mangal source set or SHA256 changed')
+    if (report['execution_status']!='PASS' or report['geometry_status']!='PASS'
+            or report['errors']!=[]):
+        raise ValueError('Original mangal execution and geometry must be PASS without errors')
+    if report['artifacts']['sha256']['bom.json']!=hashlib.sha256(raw['bom.json']).hexdigest():
+        raise ValueError('Original mangal BOM SHA256 changed')
+    checks=report['checks']
+    for name in ('valid_single_solids','sheet_thickness','clearance_side_vertical'):
+        if checks[name]['status']!='PASS':
+            raise ValueError(f'Original mangal measured check must be PASS: {name}')
+    if not isinstance(bom,list):
+        raise ValueError('Original mangal BOM must be a list')
+    sides=[row for row in bom if row['part']=='side']
+    if len(sides)!=1:
+        raise ValueError('Original mangal BOM must contain exactly one side row')
+    side=sides[0]
+
+    def positive(value, name):
+        if type(value) not in (int,float) or not math.isfinite(value) or value<=0:
+            raise ValueError(f'Original mangal {name} must be finite and positive')
+        return value
+
+    def same(actual, expected, name, absolute=1e-9):
+        actual=positive(actual,name)
+        if not math.isclose(actual,expected,rel_tol=1e-9,abs_tol=absolute):
+            raise ValueError(f'Original mangal {name} disagrees with measured report')
+
+    p=report['parameters']
+    density=positive(p['density'],'density')
+    thickness=positive(p['thickness'],'thickness')
+    clearance=positive(p['clearance'],'clearance')
+    volumes=checks['valid_single_solids']['actual']
+    volume=positive(volumes['side_1']['volume_mm3'],'side_1 volume')
+    for label in ('side_1','side_2'):
+        measured=volumes[label]
+        if measured['valid'] is not True or measured['solid_count']!=1:
+            raise ValueError(f'Original mangal {label} must be one valid solid')
+        same(measured['volume_mm3'],volume,f'{label} volume',1e-5)
+        same(checks['sheet_thickness']['actual'][label],thickness,f'{label} thickness')
+    same(side['volume_mm3'],volume,'BOM side volume',1e-5)
+    same(side['density_kg_m3'],density,'BOM side density')
+    same(side['thickness_mm'],thickness,'BOM side thickness')
+    if side['quantity']!=2:
+        raise ValueError('Original mangal BOM side quantity must be two')
+    same(side['unit_mass_kg'],volume*density*1e-9,'BOM side unit mass')
+    same(side['total_mass_kg'],2*side['unit_mass_kg'],'BOM side total mass')
+    travel=checks['clearance_side_vertical']
+    same(travel['expected']['nominal_travel_mm'],clearance,'side vertical nominal travel')
+    bracket=travel['actual']['travel_bracket_mm']
+    if len(bracket)!=2:
+        raise ValueError('Original mangal side vertical travel bracket must have two limits')
+    for actual,expected in zip(bracket,(clearance-.01,clearance+.01)):
+        same(actual,expected,'side vertical travel bracket')
+    return side['unit_mass_kg'],clearance,{name:hashlib.sha256(data).hexdigest()
+                                           for name,data in raw.items()}
+
+
+def run(output_dir=OUT, *, reference_dir=None):
     out=Path(output_dir);out.mkdir(parents=True,exist_ok=True)
-    reference=ROOT/'output'/'mangal'
-    bom=json.loads((reference/'bom.json').read_text(encoding='utf-8'))
-    old_report=json.loads((reference/'report.json').read_text(encoding='utf-8'))
-    mass=next(b['unit_mass_kg'] for b in bom if b['part']=='side')
-    c=Case(mass_wall_kg=mass,stop_travel_mm=old_report['parameters']['clearance'])
+    try:
+        mass,clearance,input_sha256=_reference_inputs(
+            ROOT/'output'/'mangal' if reference_dir is None else reference_dir)
+    except (OSError,ValueError,KeyError,TypeError,IndexError) as exc:
+        result=dict(execution_status='FAIL',design_requirements_status='NOT_CHECKED',
+            errors=[dict(kind='technical',stage='reference_input',message=str(exc))])
+        (out/'report.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+        (out/'report.md').write_text('# Клиновое исследование: технический сбой\n\n'
+            'Execution=FAIL; design requirements=NOT_CHECKED.\n\n'
+            f'Исходные данные mangal отклонены: {exc}\n\n'
+            'Ранее сохранённые CSV/SVG не являются результатами текущего запуска.\n',encoding='utf-8')
+        print(f"Execution=FAIL; reference input rejected: {exc}")
+        return 2
+    c=Case(mass_wall_kg=mass,stop_travel_mm=clearance)
     nominal=[evaluate(replace(c,angle_deg=a)) for a in ANGLES]
     # Same coefficient on both moving/limiting faces in this primary sweep.
     friction=[evaluate(replace(c,angle_deg=a,mu_static=mu,mu_seating=mu))
@@ -108,7 +186,7 @@ def run(output_dir=OUT):
             reason='SHA256 of all 27 previous source/production files; bytecode caches excluded')
     else:
         checks['previous_design_preserved']=dict(status='NOT_CHECKED',reason='Initial baseline receipt unavailable')
-    result=dict(parameters=asdict(c),reference=dict(previous_mass_kg=mass,
+    result=dict(parameters=asdict(c),reference=dict(previous_mass_kg=mass,input_sha256=input_sha256,
         mass_scope='Previous side wall is only a load proxy: new wall geometry not released',
         old_slot_width_axis='Y',old_slot_vertical_stroke_mm=.6,
         upper_lower_contact_center_spacing_mm=80,
@@ -129,4 +207,6 @@ def run(output_dir=OUT):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output-dir',type=Path,default=OUT)
-    raise SystemExit(run(parser.parse_args().output_dir))
+    parser.add_argument('--reference-dir',type=Path,default=ROOT/'output'/'mangal')
+    args=parser.parse_args()
+    raise SystemExit(run(args.output_dir,reference_dir=args.reference_dir))
