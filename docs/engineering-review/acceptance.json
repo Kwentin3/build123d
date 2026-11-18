@@ -30,45 +30,48 @@
     "cad-manufacturing": "PASS"
   },
   "source_sha256": {
-    ".agents/skills/cad-assembly/SKILL.md": "8cd9a2e73bf776c6f354c7cb91012d91ab22a046af06ecef717224ea1d3a9885",
-    ".agents/skills/cad-entry/SKILL.md": "0fc6df1539257067a8814a0184fa6bf1c651e98ad4ad26be70c9395b3d043c4a",
-    ".agents/skills/cad-manufacturing/references/laser-cutting.md": "50989d73761b670f182e5353e26bf9dd5bcd010a0b0b4c602a02d96db5597e25",
-    ".agents/skills/cad-manufacturing/SKILL.md": "9c10daea384990575bdff806b1a6eb2c7f8798dd9e1426a68f6ff1b36ed2054d",
-    ".agents/skills/cad-modeling/SKILL.md": "7eb3fa503c7865b45a7795138b9ee9e14c11253f169db0f0366e133366dcdadf",
+    ".agents/skills/cad-assembly/SKILL.md": "8deedd6bbff06b4545747e8dededc8d72a3012cf314a97e735380af342926fd3",
+    ".agents/skills/cad-entry/SKILL.md": "d7708e58e5beba06fac2185661606cbfab639e91ceadc13d5be3f091989a0784",
+    ".agents/skills/cad-manufacturing/SKILL.md": "66d4faf399cc561546f4507d80a89e81de3edaa229d660cea30a436f67aca10a",
+    ".agents/skills/cad-manufacturing/references/laser-cutting.md": "36d83abe2927d0683bb78ad054535ad466685ba2a84b062f748ea2f998a34785",
+    ".agents/skills/cad-modeling/SKILL.md": "92cad32ee190ae3056a9f4ed5bace66d487c6e0d16410a590d0cd606660fc668",
+    ".agents/skills/cad-validation/SKILL.md": "7bafe5b15ac0130d81ad66bb143994dc543b2e332b962a1edade5e3fdd4b2eb8",
     ".agents/skills/cad-validation/references/assembly-service.md": "35ae530169c76cc68f7d6c174e5af85b2b78aa0a56888ce6b1da8212edc8c155",
     ".agents/skills/cad-validation/references/attachment-load-path.md": "d63defe1154dbc20f644d1b3cddd2265b91a3b5770bea39a0b2e15080391b81b",
     ".agents/skills/cad-validation/references/functional-fit.md": "5d99800900d251337e33c7529fb4d0fa4b1b5f0baf5ae322566ce92da6ff1570",
-    ".agents/skills/cad-validation/references/local-edits.md": "2d82c5402e261eaddbd46b08bec30910513f7d1b22cf6bda849eb9cbfda2c6c6",
-    ".agents/skills/cad-validation/SKILL.md": "231ffab2117a5d575d07d1c4a4795ee687fe892110c206281495c1c79095e9b6",
+    ".agents/skills/cad-validation/references/local-edits.md": "8b42c6f1f3502df11357906c2063a2ce582336f87a88dd709c898257fde682fe",
+    "README.md": "4b82b6b9db7c6ed45d0ad122b4edc5097be82bc4363fc589439f549b56c4942b",
+    "WORKFLOW.md": "8a907391168c03adb5a65a489008898b45402c4c415cd48d5b85fbfe4bc8739d",
+    "models/filter_holder/README.md": "43b25872a5a3da1418007acdb6ab2d8350873167e5048c66e648980130191884",
     "models/filter_holder/experiment.py": "2043371939c9fcddebe6c5c21cf90c6d60077b0db8b23f434f12a94104762c93",
     "models/filter_holder/model.py": "b8ab7d74988ae7c5a01ba8111fc12594e0e4b9eac673d8d36aba9d20402a598c",
-    "models/filter_holder/README.md": "43b25872a5a3da1418007acdb6ab2d8350873167e5048c66e648980130191884",
     "models/filter_holder/test_filter_holder_review.py": "d9400bf84f5025edde40ad2347ccc30984fa7a7c8c6ea46df8ebc1560389c83b",
     "models/filter_holder/validation.py": "71bea55ddd6d514c4993325da1270318b0647e6350480d1a7a92ed613fe4fcc6",
-    "README.md": "3d1f7cb8c47767152a0a2b1bfa8b3484b02cfc2f99cbd345d348e500fe461d70",
-    "requirements.txt": "f9d15754f3c8a6596000e976b7ccbf45a6342f713d1a01b116636b67568867e2",
-    "WORKFLOW.md": "df3aa0544be0f576101931a1505eccbae7476acca5e4e3926a3f5727b2dab743"
+    "requirements.txt": "9182233c8cdffd53b2571a5e7c9d9d2c5c57be7be565d353f700f1ca8463c856"
   },
   "artifact_sha256": {
+    "docs/engineering-review/README.md": "ddcce2d9c8bb39a7f3cd0a3e0b44eed0ad2acade74e8d3e79c35d30c0a979e9f",
     "docs/engineering-review/clock-regression.md": "083f90df311af9b78c0a3a711b437d3e60bd8936dd2826e774622ea0cd8c4447",
+    "docs/engineering-review/delivery-hashes.md": "f22d53755136672c4369a0207938e5b7c622917817905e775e55f35fa0df0d04",
+    "docs/engineering-review/evidence/README.md": "48d490ceee35ea4ecca032e35476edd721d7d1e4d56f78683b2625b396ace2d6",
     "docs/engineering-review/evidence/acceptance-review.md": "f1309c6187e2ba3a4b7a832dd2a0d94a5f9f6a83f9ea4f77ad85a703c1a91635",
-    "docs/engineering-review/evidence/before-argv.json": "3d16539722f6f1740e6929ad7f8d0d09371d74689b0f3e507b777601d3092111",
+    "docs/engineering-review/evidence/before-argv.json": "a32cdc8ece2b217e4a7264051d415f32c8485fa7964e81735fa7836443a0dc57",
     "docs/engineering-review/evidence/context.md": "f417201852d79f17025a46bb171e610888ddb58b3c53280a84b7f82fc2a4ea04",
     "docs/engineering-review/evidence/execution-notes.txt": "2de8a770bd3a54b07533c9edbffc128ef747fa2cc5f2f8bfe14cc1be8921253e",
-    "docs/engineering-review/evidence/input-provenance.json": "eea96c2d312f67217a357d3b5c4a2e32ea582ef661efcd66e149626920ddd933",
+    "docs/engineering-review/evidence/input-provenance.json": "28d965ef0b75e38ea6ab3f90ebb16a0c7d89cd23c815856d66246bb36c91bec0",
     "docs/engineering-review/evidence/measure.py": "5574072a43a3116302f48a6be580619b1de8257538e617a4851fef7e5fbbc6e1",
-    "docs/engineering-review/evidence/measurements.json": "831f44e1e5555aa1a25754a777b1cbce6b1c80fee8e452158c15cbd803e70ed2",
-    "docs/engineering-review/evidence/pilot-input-sha256.json": "fe3b243b93b422953824eaf16254369e68daadb3f761d104dd3109272cc09ca2",
+    "docs/engineering-review/evidence/measurements.json": "9ffaab178edd932bbed6ed179fb46d52e45a477f9a7d1fd6d605a51feb267d1c",
+    "docs/engineering-review/evidence/pilot-input-sha256.json": "96a2c73d28371ce4f45c8778a5b643c8547489ffb76f9ca4e10d40ccf37eb9f4",
     "docs/engineering-review/evidence/pilot-input.zip": "484408ffeec8fc44343b098947816289c0e23fde7599c43fd7e0f59bfd422133",
     "docs/engineering-review/evidence/pilot-prompt.txt": "b5a58c6b9e258d3abab648fda4c90e5ee3a74a49fca69c4f32f10deb5d787f56",
-    "docs/engineering-review/evidence/read-inputs.json": "81e63e7746142ddf7da1c1be7879287e47c9d5fd2b547bd2ab2cf5078a40006b",
-    "docs/engineering-review/evidence/README.md": "48d490ceee35ea4ecca032e35476edd721d7d1e4d56f78683b2625b396ace2d6",
-    "docs/engineering-review/evidence/regression.json": "63cb4b174321958c13e6efe2769089f0f1480f0767884f08fce8a4eb11bf04dd",
+    "docs/engineering-review/evidence/read-inputs.json": "e135e728868839f325a04f22d272f73a88c9e94a7d97e6847d8efb77e856c948",
+    "docs/engineering-review/evidence/regression.json": "b6279c6b7e8ec9aba34b313372c03048f8f741dd990dbc9dfe5e32733d2c3fb5",
     "docs/engineering-review/evidence/review.md": "60726aeb3d50d01bceb7b5cc22db2f765c87aba7856e8c420523a0e1a67b8554",
-    "docs/engineering-review/README.md": "d6df0245fd6b059c78a34967cd18d42e1d301a5a01ddcbdc19ca62d189d91d8a",
+    "docs/engineering-review/evidence/windows-execution-snapshot.zip": "185aca635a11557c2c3fc2c2d68e9d6793728cae9df06fd5048a9b4ef19bc936",
     "docs/engineering-review/sources.md": "699a882b6fb27a4c2e5f4e985f2ef864f36a08e9abffc496a11187f067f5cb1a",
-    "output/examples/engineering_review/filter-control.zip": "0706442b5501ee31ad1e4ccab786b49bd98602bcfef8665a2981ad92b347ebdc",
-    "output/examples/engineering_review/README.md": "0997e92869ff754b224b510d9856f5c224fa850e8c1919876981865ec06d0fe1"
+    "docs/engineering-review/verify_delivery.py": "bc0a1a1139dd5a5607e107a0c6e140f848f2479ba373fe5541f17fd4c59f1232",
+    "output/examples/engineering_review/README.md": "0997e92869ff754b224b510d9856f5c224fa850e8c1919876981865ec06d0fe1",
+    "output/examples/engineering_review/filter-control.zip": "0706442b5501ee31ad1e4ccab786b49bd98602bcfef8665a2981ad92b347ebdc"
   },
   "protected_main_sha256": {
     "models/gear/README.md": "6388ae3814d9066b2e788175982e90b9ce6024668dfa16ca56e6c1e0d8eca9ea",
@@ -131,5 +134,29 @@
     "Context instruction isolation, not OS isolation",
     "No physical or manufacturing qualification",
     "PR2 models and main preserved"
-  ]
+  ],
+  "delivery_hash_scope": {
+    "representation": "raw-git-blob-bytes-v1",
+    "normalization": "none",
+    "groups": [
+      "source_sha256",
+      "artifact_sha256"
+    ],
+    "reference_rule": "Resolve caller ref once; read manifest and all listed targets from that same commit",
+    "coverage": "Only listed paths; not the entire repository tree",
+    "excluded": [
+      "acceptance.json self-reference",
+      "unlisted paths including GOAL.md and subsequent verification receipt",
+      "protected_main_sha256 and nested historical SHA fields"
+    ],
+    "historical_reference": "windows_execution_snapshot and delivery-hashes.md"
+  },
+  "windows_execution_snapshot": {
+    "path": "docs/engineering-review/evidence/windows-execution-snapshot.zip",
+    "manifest_member": "docs/engineering-review/acceptance.json",
+    "original_published_commit": "fadedbab0a4040630906d23857354be9bd4aa40c",
+    "source_artifact_bindings": 37,
+    "members": 38,
+    "origin": "Preserved Windows execution snapshot; not reconstructed from LF Git blobs"
+  }
 }
