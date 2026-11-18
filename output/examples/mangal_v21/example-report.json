@@ -1,0 +1,843 @@
+{
+  "kind": "derived_portable_historical_example_report",
+  "model": "mangal_v21",
+  "snapshot_date": "2026-11-06",
+  "original_report_sha256": "3fe561f449c3188593a13728dd9648ff498d7dbec0fb26eb104068a210a8acbe",
+  "provenance": "Derived from the original local report; absolute artifact paths and viewer port are not published. Reported statuses describe the dated snapshot, not a new run or current-source acceptance.",
+  "current_source_binding": false,
+  "current_source_binding_reason": "Historical source SHA-256 differs from current models/mangal_v21/model.py and documentation.py. Historical test SHA-256 also differs from models/mangal_v21/tests/test_v21.py. Artifact and dependency hashes match their historical verification; current-code acceptance is unverified.",
+  "historical_report": {
+    "release": "2.1",
+    "parameters": {
+      "length": 500,
+      "width": 300,
+      "height": 160,
+      "thickness": 3,
+      "leg_height": 180,
+      "clearance": 0.6,
+      "bottom_gap": 3,
+      "key_float": 3,
+      "relief_radius": 0.8,
+      "density": 7850,
+      "wedge_angle_deg": 40,
+      "guide_vertical_clearance": 1.2,
+      "guide_up_allowance": 0.7,
+      "release_margin": 0.15
+    },
+    "actual": {
+      "mass_kg": 11.154796528845155,
+      "mass_wall_kg": 1.89653586464233,
+      "assembly_bounds_mm": {
+        "min": [
+          -22.0,
+          -23.0,
+          0.0
+        ],
+        "max": [
+          522.0,
+          323.0,
+          340.0
+        ],
+        "size": [
+          544.0,
+          346.0,
+          340.0
+        ]
+      },
+      "measured_parameters": {
+        "inside_length_mm": 500.0,
+        "inside_width_mm": 300.0,
+        "wall_height_mm": 160.0,
+        "bottom_elevation_mm": 190.0,
+        "usable_depth_mm": 147.0,
+        "main_wall_top_mm": 340.0
+      },
+      "mass_method": "Native solid volume times assumed density, not a weighed prototype"
+    },
+    "geometry_status": "PASS",
+    "execution_status": "PASS",
+    "production_approval": "NOT_CHECKED",
+    "errors": []
+  },
+  "historical_checks": {
+    "part_inventory": {
+      "status": "PASS",
+      "actual": [
+        "bottom",
+        "end_1",
+        "end_2",
+        "side_1",
+        "side_2"
+      ],
+      "expected": [
+        "bottom",
+        "end_1",
+        "end_2",
+        "side_1",
+        "side_2"
+      ]
+    },
+    "valid_single_solids": {
+      "status": "PASS",
+      "actual": {
+        "side_1": {
+          "valid": true,
+          "solids": 1,
+          "volume_mm3": 241596.92543214394
+        },
+        "side_2": {
+          "valid": true,
+          "solids": 1,
+          "volume_mm3": 241596.92543214394
+        },
+        "end_1": {
+          "valid": true,
+          "solids": 1,
+          "volume_mm3": 249965.668761815
+        },
+        "end_2": {
+          "valid": true,
+          "solids": 1,
+          "volume_mm3": 249965.668761815
+        },
+        "bottom": {
+          "valid": true,
+          "solids": 1,
+          "volume_mm3": 437868.0
+        }
+      }
+    },
+    "flat_closed_profiles": {
+      "status": "PASS",
+      "actual": {
+        "side": {
+          "valid": true,
+          "faces": 1,
+          "closed": true,
+          "area_mm2": 80532.30847738135,
+          "z_span_mm": 0.0,
+          "z_offset_mm": 0.0
+        },
+        "end": {
+          "valid": true,
+          "faces": 1,
+          "closed": true,
+          "area_mm2": 83321.88958727165,
+          "z_span_mm": 0.0,
+          "z_offset_mm": 0.0
+        },
+        "bottom": {
+          "valid": true,
+          "faces": 1,
+          "closed": true,
+          "area_mm2": 145955.99999999997,
+          "z_span_mm": 0.0,
+          "z_offset_mm": 0.0
+        }
+      }
+    },
+    "layout_inventory": {
+      "status": "PASS",
+      "actual": 5,
+      "expected": 5
+    },
+    "flat_inventory": {
+      "status": "PASS",
+      "actual": [
+        "bottom",
+        "end",
+        "side"
+      ],
+      "expected": [
+        "bottom",
+        "end",
+        "side"
+      ]
+    },
+    "dimensions": {
+      "status": "PASS",
+      "actual": {
+        "inside_length_mm": 500.0,
+        "inside_width_mm": 300.0,
+        "wall_height_mm": 160.0,
+        "leg_height_mm": 180.0,
+        "bottom_elevation_mm": 190.0
+      },
+      "expected": {
+        "inside_length_mm": 500,
+        "inside_width_mm": 300,
+        "wall_height_mm": 160,
+        "leg_height_mm": 180,
+        "bottom_elevation_mm": 190
+      }
+    },
+    "sheet_thickness": {
+      "status": "PASS",
+      "actual": {
+        "side_1": 3.0,
+        "side_2": 3.0,
+        "end_1": 3.0,
+        "end_2": 3.0,
+        "bottom": 3.0
+      },
+      "expected": 3
+    },
+    "assembled_no_interference": {
+      "status": "PASS",
+      "actual": [],
+      "expected": []
+    },
+    "upper_v_geometry": {
+      "status": "PASS",
+      "actual": [
+        {
+          "center_x_mm": -1.5,
+          "flanks": [
+            {
+              "angle_to_vertical_deg": 39.99999999999981,
+              "floor_x_mm": -2.9999999999999805,
+              "mouth_x_mm": -3.3,
+              "throat_x_mm": -2.6643601475290897
+            },
+            {
+              "angle_to_vertical_deg": 40.00000000000001,
+              "floor_x_mm": -2.1566082253343666e-14,
+              "mouth_x_mm": 0.30000000000000004,
+              "throat_x_mm": -0.33563985247091455
+            }
+          ],
+          "valid": true
+        },
+        {
+          "center_x_mm": 501.5,
+          "flanks": [
+            {
+              "angle_to_vertical_deg": 40.00000000000298,
+              "floor_x_mm": 500.00000000000006,
+              "mouth_x_mm": 499.7,
+              "throat_x_mm": 500.335639852471
+            },
+            {
+              "angle_to_vertical_deg": 40.00000000000298,
+              "floor_x_mm": 502.99999999999994,
+              "mouth_x_mm": 503.3,
+              "throat_x_mm": 502.664360147529
+            }
+          ],
+          "valid": true
+        }
+      ],
+      "expected": {
+        "angle_to_vertical_deg": 40,
+        "mouth_width_mm": 3.6,
+        "floor_width_mm": 3
+      }
+    },
+    "upper_fixed_windows": {
+      "status": "PASS",
+      "actual": [
+        {
+          "center_y_mm": -1.5,
+          "horizontal_levels_mm": [
+            290.0,
+            320.6
+          ]
+        },
+        {
+          "center_y_mm": 301.5,
+          "horizontal_levels_mm": [
+            290.0,
+            320.6
+          ]
+        }
+      ],
+      "expected": [
+        290,
+        320.6
+      ]
+    },
+    "lower_receiver_windows": {
+      "status": "PASS",
+      "actual": [
+        {
+          "center_y_mm": -1.5,
+          "horizontal_levels_mm": [
+            214.5,
+            235.7
+          ]
+        },
+        {
+          "center_y_mm": 301.5,
+          "horizontal_levels_mm": [
+            214.5,
+            235.7
+          ]
+        }
+      ],
+      "expected": [
+        214.5,
+        235.7
+      ]
+    },
+    "upper_corner_relief": {
+      "status": "PASS",
+      "actual": [
+        {
+          "center": [
+            500.33563985247093,
+            290.4,
+            0.0
+          ],
+          "radius_mm": 0.30000000000000004,
+          "lowest_z_mm": 290.1701866670643
+        },
+        {
+          "center": [
+            502.66436014752907,
+            290.4,
+            0.0
+          ],
+          "radius_mm": 0.30000000000000004,
+          "lowest_z_mm": 290.1701866670643
+        },
+        {
+          "center": [
+            -2.664360147529088,
+            290.4,
+            0.0
+          ],
+          "radius_mm": 0.30000000000000004,
+          "lowest_z_mm": 290.1701866670643
+        },
+        {
+          "center": [
+            -0.3356398524709119,
+            290.4,
+            0.0
+          ],
+          "radius_mm": 0.30000000000000004,
+          "lowest_z_mm": 290.1701866670643
+        }
+      ],
+      "expected": "four native corner relief arcs strictly above bearing floor"
+    },
+    "seated_side_1": {
+      "status": "PASS",
+      "actual": [
+        {
+          "moving": "side_1",
+          "fixed": "end_2",
+          "swept_common_mm3": 0.0020982955803899314
+        },
+        {
+          "moving": "side_1",
+          "fixed": "end_2",
+          "swept_common_mm3": 0.0020982955803865
+        },
+        {
+          "moving": "side_1",
+          "fixed": "end_1",
+          "swept_common_mm3": 0.002098295580385147
+        },
+        {
+          "moving": "side_1",
+          "fixed": "end_1",
+          "swept_common_mm3": 0.0020982955803855114
+        }
+      ],
+      "expected": "downward 0.05 mm blocked at both upper V seats"
+    },
+    "seated_side_2": {
+      "status": "PASS",
+      "actual": [
+        {
+          "moving": "side_2",
+          "fixed": "end_2",
+          "swept_common_mm3": 0.002098295580389916
+        },
+        {
+          "moving": "side_2",
+          "fixed": "end_2",
+          "swept_common_mm3": 0.002098295580386522
+        },
+        {
+          "moving": "side_2",
+          "fixed": "end_1",
+          "swept_common_mm3": 0.002098295580385156
+        },
+        {
+          "moving": "side_2",
+          "fixed": "end_1",
+          "swept_common_mm3": 0.0020982955803855196
+        }
+      ],
+      "expected": "downward 0.05 mm blocked at both upper V seats"
+    },
+    "seated_bottom": {
+      "status": "PASS",
+      "actual": [
+        {
+          "moving": "bottom",
+          "fixed": "end_1",
+          "swept_common_mm3": 17.999999999999787
+        },
+        {
+          "moving": "bottom",
+          "fixed": "end_2",
+          "swept_common_mm3": 17.9999999999997
+        }
+      ]
+    },
+    "lower_guide_y_minus": {
+      "status": "PASS",
+      "actual": {
+        "travel_bracket_mm": [
+          0.29,
+          0.31
+        ],
+        "common_mm3": [
+          0.0,
+          1.1760025000575436
+        ]
+      },
+      "expected": 0.3
+    },
+    "lower_guide_y_plus": {
+      "status": "PASS",
+      "actual": {
+        "travel_bracket_mm": [
+          0.29,
+          0.31
+        ],
+        "common_mm3": [
+          0.0,
+          1.1760025000589538
+        ]
+      },
+      "expected": 0.3
+    },
+    "lower_guide_z_down": {
+      "status": "PASS",
+      "actual": {
+        "travel_bracket_mm": [
+          0.49,
+          0.51
+        ],
+        "common_mm3": [
+          0.0,
+          0.12000250005848782
+        ]
+      },
+      "expected": 0.5
+    },
+    "lower_guide_z_up": {
+      "status": "PASS",
+      "actual": {
+        "travel_bracket_mm": [
+          0.69,
+          0.71
+        ],
+        "common_mm3": [
+          0.0,
+          0.12000250005888599
+        ]
+      },
+      "expected": 0.7
+    },
+    "v_restrains_end": {
+      "status": "PASS",
+      "actual": [
+        {
+          "moving": "end_2",
+          "fixed": "side_1",
+          "swept_common_mm3": 13.847788804991682
+        },
+        {
+          "moving": "end_2",
+          "fixed": "side_2",
+          "swept_common_mm3": 13.847788804945395
+        },
+        {
+          "moving": "end_2",
+          "fixed": "side_1",
+          "swept_common_mm3": 13.847788804991476
+        },
+        {
+          "moving": "end_2",
+          "fixed": "side_2",
+          "swept_common_mm3": 13.84778880494518
+        }
+      ]
+    },
+    "raised_end_withdrawal": {
+      "status": "PASS",
+      "actual": [],
+      "expected": "continuous withdrawal clears raised V seats without retaining keys"
+    },
+    "no_retaining_slots": {
+      "status": "PASS",
+      "actual": [
+        {
+          "part": "side_1",
+          "x_mm": -7.5,
+          "material_probes": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "above_roof_clear": true
+        },
+        {
+          "part": "side_1",
+          "x_mm": 507.5,
+          "material_probes": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "above_roof_clear": true
+        },
+        {
+          "part": "side_2",
+          "x_mm": -7.5,
+          "material_probes": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "above_roof_clear": true
+        },
+        {
+          "part": "side_2",
+          "x_mm": 507.5,
+          "material_probes": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "above_roof_clear": true
+        }
+      ],
+      "expected": "four former slot bands filled below the original projection roof"
+    },
+    "assembly_motions_present": {
+      "status": "PASS",
+      "actual": 4,
+      "expected": 4
+    },
+    "motion_raise_both_sides": {
+      "status": "PASS",
+      "actual": {
+        "delta_mm": [
+          0,
+          0,
+          0.507526077778263
+        ],
+        "continuous": true,
+        "stage": 1,
+        "collision_witnesses": []
+      },
+      "expected": "collision-free sequential disassembly stage"
+    },
+    "motion_end_2": {
+      "status": "PASS",
+      "actual": {
+        "delta_mm": [
+          32,
+          0,
+          0
+        ],
+        "continuous": true,
+        "stage": 2,
+        "collision_witnesses": []
+      },
+      "expected": "collision-free sequential disassembly stage"
+    },
+    "motion_bottom": {
+      "status": "PASS",
+      "actual": {
+        "delta_mm": [
+          32,
+          0,
+          0
+        ],
+        "continuous": true,
+        "stage": 3,
+        "collision_witnesses": []
+      },
+      "expected": "collision-free sequential disassembly stage"
+    },
+    "motion_withdraw_both_sides": {
+      "status": "PASS",
+      "actual": {
+        "delta_mm": [
+          32,
+          0,
+          0
+        ],
+        "continuous": true,
+        "stage": 4,
+        "collision_witnesses": []
+      },
+      "expected": "collision-free sequential disassembly stage"
+    },
+    "disassembly_terminal_inventory": {
+      "status": "PASS",
+      "actual": [
+        "end_1"
+      ],
+      "expected": [
+        "end_1"
+      ]
+    },
+    "step_roundtrip": {
+      "status": "PASS",
+      "actual": {
+        "solid_count": 5,
+        "symmetric_difference_mm3": [
+          3.7834979593753815e-09,
+          3.7834979593753815e-09,
+          5.820766091346741e-11,
+          5.820766091346741e-11,
+          0.0
+        ]
+      },
+      "reason": "Spatially matched five separate re-imported STEP solids"
+    },
+    "dxf_side": {
+      "status": "PASS",
+      "actual": {
+        "unit_code": 4,
+        "scale": 1,
+        "entities": 80,
+        "duplicate_entities": 0,
+        "audit_errors": 0,
+        "closed": true,
+        "bbox_error_mm": 0.0,
+        "wire_count": 13,
+        "expected_wire_count": 13,
+        "imported_area_mm2": 80532.30847738136,
+        "source_area_mm2": 80532.30847738135
+      }
+    },
+    "dxf_end": {
+      "status": "PASS",
+      "actual": {
+        "unit_code": 4,
+        "scale": 1,
+        "entities": 60,
+        "duplicate_entities": 0,
+        "audit_errors": 0,
+        "closed": true,
+        "bbox_error_mm": 0.0,
+        "wire_count": 11,
+        "expected_wire_count": 11,
+        "imported_area_mm2": 83321.88958727165,
+        "source_area_mm2": 83321.88958727165
+      }
+    },
+    "dxf_bottom": {
+      "status": "PASS",
+      "actual": {
+        "unit_code": 4,
+        "scale": 1,
+        "entities": 20,
+        "duplicate_entities": 0,
+        "audit_errors": 0,
+        "closed": true,
+        "bbox_error_mm": 0.0,
+        "wire_count": 1,
+        "expected_wire_count": 1,
+        "imported_area_mm2": 145955.99999999997,
+        "source_area_mm2": 145955.99999999997
+      }
+    },
+    "flat_layout": {
+      "status": "PASS",
+      "actual": {
+        "parts": 5,
+        "unit": "mm",
+        "scale": 1,
+        "method": "native SVG; one bottom planar face per placed plate; contours only"
+      },
+      "reason": "Physical-size layout; no sheet-stock nesting optimization"
+    },
+    "mechanical_model_correspondence": {
+      "status": "PASS",
+      "actual": {
+        "mass_wall_kg": 1.89653586464233,
+        "angle_deg": 40,
+        "joint_weight_share": 0.5,
+        "first_contact_drop_mm": 0.357526077778263
+      },
+      "reason": "Native V faces and downward seating obstruction agree with the conditional two-face model. Does not validate stiffness/friction or physical force."
+    },
+    "physical_assembly": {
+      "status": "NOT_CHECKED",
+      "reason": "No cold unloaded physical assembly or handling test. Seated V blocks axial withdrawal only until both walls lift; no anti-lift backup."
+    },
+    "hot_performance": {
+      "status": "NOT_CHECKED",
+      "reason": "No heating/cooling cycle, differential expansion, warping, wear or hot-load test."
+    },
+    "manual_release": {
+      "status": "NOT_CHECKED",
+      "reason": "No cooled physical release test; friction and retained preload unmeasured."
+    },
+    "stability_strength": {
+      "status": "NOT_CHECKED",
+      "reason": "No loaded stability, uneven-ground, wind or structural strength acceptance; accidental wall lift can release end retention."
+    },
+    "manufacturing_fit": {
+      "status": "NOT_CHECKED",
+      "reason": "No measured stock, supplier tolerance agreement or laser-cut fit coupon."
+    },
+    "viewer_images": {
+      "status": "PASS",
+      "reason": "Fresh images, visual acceptance separate"
+    },
+    "visual_review": {
+      "status": "PASS",
+      "scope": "Current release assembly, top, five-part layout and upper-joint display section opened",
+      "observations": [
+        "No retaining keys in assembly or layout",
+        "Former upper slots are filled",
+        "V seats and free lower guide retained"
+      ],
+      "image_sha256": {
+        "assembly_iso.png": "17e3f0af3670383cc8d57232340617606cd31b382128bbdf1cd7f55345f78f48",
+        "assembly_top.png": "73e945e906004df5467dd3d37a02567980e5a2649e01691b7f607ff9d810c161",
+        "layout.png": "4a80cff6485476f9c18b719a2cd5b706c306abfbcfb79802fc9bf351e754411d",
+        "upper_joint.png": "19db1cc9d76e6779b0ff3e8dfa762ac5878b5ab368de260b1b53d4bd0d7ef316"
+      },
+      "limits": "Images do not verify numerical dimensions, strength or cooled release"
+    },
+    "previous_versions_preserved": {
+      "status": "PASS",
+      "actual": {
+        "files": 75,
+        "changed": []
+      }
+    }
+  },
+  "historical_not_checked": {
+    "physical_assembly": {
+      "status": "NOT_CHECKED",
+      "reason": "No cold unloaded physical assembly or handling test. Seated V blocks axial withdrawal only until both walls lift; no anti-lift backup."
+    },
+    "hot_performance": {
+      "status": "NOT_CHECKED",
+      "reason": "No heating/cooling cycle, differential expansion, warping, wear or hot-load test."
+    },
+    "manual_release": {
+      "status": "NOT_CHECKED",
+      "reason": "No cooled physical release test; friction and retained preload unmeasured."
+    },
+    "stability_strength": {
+      "status": "NOT_CHECKED",
+      "reason": "No loaded stability, uneven-ground, wind or structural strength acceptance; accidental wall lift can release end retention."
+    },
+    "manufacturing_fit": {
+      "status": "NOT_CHECKED",
+      "reason": "No measured stock, supplier tolerance agreement or laser-cut fit coupon."
+    }
+  },
+  "historical_source_root": "models/mangal_v21",
+  "historical_source_sha256": {
+    "documentation.py": "9eb39d04592665418d8704daed9d909d469c0240374ad084ab6e94b62bff3636",
+    "exports.py": "6266d19dc89cc331cb2cdab78af6b0c392c6ada590c4a4a6f41771c0b9ae32dd",
+    "model.py": "05bd48067ff962d0e4bc72f7f70994a14157ca85c5de44c3300cb7287457fb79",
+    "validation.py": "04dab9b2ffe749d815ff2d993d3e7fde45684f7bee477e1dc53d5709d9b20a20"
+  },
+  "historical_dependency_source_sha256": {
+    "models/mangal/model.py": "82a9048fe9d27e2dd43dfc4e8c1aa6373a209573673efa934a167b67efb413b8",
+    "models/mangal/exports.py": "22f5e7ee525181fcf9251e00a192045794b05f6c45ba0248a92c54c03907325f",
+    "models/mangal/validation.py": "b5fce29017d12cfe195fb5bf44e25d48502d0375123d0dfa77ad11008819492d",
+    "models/mangal/documentation.py": "64dae3e555e6e650522b56996f58670ddf1c4ab6315cdb825aa7c01a9320482d",
+    "models/mangal_v2/model.py": "8e50a6a06b218d2d60d17d664f4b405778d6f1bbf722ec263204ef4b67dde47b",
+    "models/mangal_wedge/mechanics.py": "2c9a546fce24ea9279cc4593fd49ac16d2f78e4d6653199f764d7ad880477f2e"
+  },
+  "selected_artifacts": {
+    "assembly.step": {
+      "bytes": 591646,
+      "sha256": "88589c00e0120158f8bb705f06b4ab1d5b64e35670f8e8022031cb1390e99201"
+    },
+    "side.dxf": {
+      "bytes": 29983,
+      "sha256": "4d11161d74ef1dd2cdb05a639f5b10dce1fa636230f872b5f7363021b5aa1a7f"
+    },
+    "end.dxf": {
+      "bytes": 27323,
+      "sha256": "213e13cd2c394f869d713208e72ba7d03e952946c3f6382cc7cefdcc7c9d684d"
+    },
+    "bottom.dxf": {
+      "bytes": 21136,
+      "sha256": "30bcd33d85811c7ad06cd5d44e72d6d21f83098a95ca48385ab0f1297402c3eb"
+    },
+    "bom.csv": {
+      "bytes": 495,
+      "sha256": "aa37c2c5ee50b1a418ab2caa62d94fbc057cff9df18fa83f886a7a50f181ba1f"
+    },
+    "instructions.md": {
+      "bytes": 3913,
+      "sha256": "a6d27fa063f3090fa94de24687d9218a5ed5ebd687e44dfe1220c233bb2a457d"
+    },
+    "manufacturing.md": {
+      "bytes": 4550,
+      "sha256": "d3a8c77fb6f4bbf263052dae23cbba6b3f47a57be574582f08d427a1902345e6"
+    },
+    "assembly_iso.png": {
+      "bytes": 29469,
+      "sha256": "17e3f0af3670383cc8d57232340617606cd31b382128bbdf1cd7f55345f78f48"
+    },
+    "assembly_top.png": {
+      "bytes": 10588,
+      "sha256": "73e945e906004df5467dd3d37a02567980e5a2649e01691b7f607ff9d810c161"
+    },
+    "layout.png": {
+      "bytes": 13135,
+      "sha256": "4a80cff6485476f9c18b719a2cd5b706c306abfbcfb79802fc9bf351e754411d"
+    },
+    "upper_joint.png": {
+      "bytes": 10256,
+      "sha256": "19db1cc9d76e6779b0ff3e8dfa762ac5878b5ab368de260b1b53d4bd0d7ef316"
+    },
+    "assembly_sequence.svg": {
+      "bytes": 695,
+      "sha256": "7eb6bf5ab972079b8149c6fa3f9d9bcfc612956299b3c14710681710648ed6de"
+    },
+    "layout.svg": {
+      "bytes": 7758,
+      "sha256": "f8b21499bd587ece5c15a8fb1ab21454f0e9880a8507156f4ff4b6a4c600cdf9"
+    },
+    "mangal_v21_documentation.pdf": {
+      "bytes": 209382,
+      "sha256": "ebd70df3bc6203ea7a80836b7e1192f74e546e0e2f9adf84675b94169cb5d261"
+    }
+  },
+  "limits": "Historical digital prototype. Images do not prove dimensions. No new geometry run, STEP round-trip, tests, physical validation or manufacturing approval was performed for this curated example."
+}

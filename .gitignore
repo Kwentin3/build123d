@@ -2,4 +2,10 @@
 __pycache__/
 .pytest_cache/
 *.py[cod]
-output/
+/output/*
+!/output/examples/
+.env
+.env.*
+*.log
+*.tmp
+*.temp

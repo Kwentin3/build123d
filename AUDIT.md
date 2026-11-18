@@ -88,10 +88,9 @@ mangal_v21. Последние четыре — история разработ�
 | Текущие native CLI | Plate: 21 PASS/5 NOT_CHECKED; v21: 35 PASS/7 NOT_CHECKED, geometry/execution PASS. STEP импортирован и проверен обоими генераторами |
 | Актуальность | 27 source/dependency/artifact-привязок текущих двух отчётов совпали с реальными файлами; прежние output не изменились по baseline |
 
-Evidence: [plate-scenarios](output/harness/plate-scenarios/README.md),
-[сборка](output/harness/scenario2.json),
-[пластина](output/harness/plate/report.json),
-[мангал](output/harness/mangal_v21/report.json). Это локальные generated artifacts,
+Локальные evidence: `output/harness/plate-scenarios/README.md`,
+`output/harness/scenario2.json`, `output/harness/plate/report.json`,
+`output/harness/mangal_v21/report.json`. Это локальные generated artifacts,
 исключённые из Git, а не часть runtime. Архив пластины сохраняет исходники,
 отчёты и точные STEP/STL каждой стадии; 23 сохранённых файла сверены по хэшам.
 
@@ -124,7 +123,7 @@ build123d 0.13.0, cadquery-ocp-novtk 8.0.1.1.0, ocp_vscode 4.2.0, pytest 9.2.0.
 
 112 прежних output-файлов сохранились без изменений; из 144 baseline-файлов
 изменились только четыре согласованных модельных/тестовых исходника.
-[Сводка сохранности](output/harness/preservation.json). Текущая геометрия
+Сводка сохранности: локальный `output/harness/preservation.json`. Текущая геометрия
 сохранена; отличие runner — только учёт evidence, документации — запрет
 непривязанных старых снимков. Полнота raw provider context и физические
 свойства этим этапом не аттестуются.
@@ -150,7 +149,7 @@ build123d 0.13.0, cadquery-ocp-novtk 8.0.1.1.0, ocp_vscode 4.2.0, pytest 9.2.0.
 чужой исполняемый код не заимствовался.
 
 Один новый исполнитель, вызванный с `fork_turns="none"`, получил сохранённое
-[задание](output/handoff/brief.md) на уже известный вариант направляющей мангала
+локальное задание `output/handoff/brief.md` на уже известный вариант направляющей мангала
 0,7→0,8 мм. Без изменения исходников проверены сопрягаемые детали, четыре
 последовательных движения и STEP. Только торцы имеют геометрическую разность;
 стенки и дно прежние. Native report: 35 PASS/7 NOT_CHECKED. Единственный полный
@@ -158,8 +157,8 @@ pytest: **70 passed за 313,18 с**, exit 0. CAD-опыт занял 14,110 с.
 Основной агент сверил результат с заданием; это исследованный вариант,
 не принятие новой конструкции. Физическая приёмка остаётся NOT_CHECKED.
 
-[Отчёт исполнителя](output/handoff/report.md), [наблюдаемый вызов](output/handoff/dispatch.md),
-[STEP-сравнение](output/handoff/variant/comparison.json), [pytest](output/handoff/variant/pytest.log)
+Локальные `output/handoff/report.md`, `output/handoff/dispatch.md`,
+`output/handoff/variant/comparison.json`, `output/handoff/variant/pytest.log`
 сохранены как локальные evidence, исключённые из Git. Существенных запросов
 недостающих данных не было. Прочитаны entry/modeling/assembly/validation,
 связанные исходники, правила записи отчёта и исполнения; выполнен поиск
@@ -174,3 +173,27 @@ memory-указателя без чтения rollout. История обсуж
 сохранены; модели и тесты относительно опоры не изменены. Временные каталоги
 pytest удалены адресно, процесс завершён; воспроизводящий experiment.py
 оставлен только в output/handoff как артефакт опыта.
+
+## Подготовка к GitHub
+
+Локальные три коммита до упаковки сохранены без переписывания. Проверены
+63 разных исторических blob: секретов, личных абсолютных путей и мусора
+не найдено. Remote Kwentin3/build123d при подготовке пустой и публичный;
+доступ на запись подтверждён. Первая отправка требует подтверждения состава
+пользователем; до него материалы готовятся только локально.
+
+Все 68 pinned requirements имеют доступные в PyPI совместимые Windows x64 /
+Python 3.13 wheels. Для полного теста чистого клона нужно сначала выполнить
+исходный `models/mangal/model.py`: исследование клина читает его BOM/отчёт.
+Порядок указан в README; геометрия, тесты и зависимости не менялись.
+
+В [output/examples](output/examples/README.md) отобраны 17 исторических файлов
+и два производных переносимых отчёта, всего с README около 1 MiB. Даты и
+неподтверждённая текущая source binding указаны явно. PDF проверен на семь
+страниц и содержимое, выбранные PNG открыты; личных путей в этом наборе нет.
+Оригинальные результаты сохранены. Остальной output, среды, кэши, логи и
+локальные evidence в Git не включаются. Правило attributes сохраняет байты
+выбранных CAD-файлов при checkout, чтобы не нарушать их записанные SHA-256.
+
+Свежая установка и проверка чистого клона выполняются перед публикацией;
+их итог будет зафиксирован после завершения.

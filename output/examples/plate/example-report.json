@@ -1,0 +1,364 @@
+{
+  "kind": "derived_portable_historical_example_report",
+  "model": "plate",
+  "snapshot_date": "2026-11-05",
+  "original_report_sha256": "33b7d8694a64d62e15fe225dbbaa8714641eb931d92140680f364ec30e1710ca",
+  "provenance": "Derived from the original local report; absolute artifact paths and viewer port are not published. Reported statuses describe the dated snapshot, not a new run or current-source acceptance.",
+  "current_source_binding": false,
+  "current_source_binding_reason": "Original plate report has no source, dependency or artifact SHA-256 bindings; correspondence with current code is unverified.",
+  "historical_report": {
+    "units": {
+      "length": "mm",
+      "volume": "mm^3"
+    },
+    "parameters": {
+      "width": 100.0,
+      "height": 60.0,
+      "thickness": 8.0,
+      "hole_diameter": 12.0
+    },
+    "expected_parameters": {
+      "width": 100.0,
+      "height": 60.0,
+      "thickness": 8.0,
+      "hole_diameter": 12.0
+    },
+    "actual": {
+      "dimensions_mm": [
+        100.0,
+        60.0,
+        8.0
+      ],
+      "volume_mm3": 47095.22131576614,
+      "solid_count": 1,
+      "thickness_mm": 8.0,
+      "bore_diameters_mm": [
+        12.0
+      ],
+      "rim_centres_mm": [
+        [
+          0.0,
+          0.0,
+          4.0
+        ],
+        [
+          0.0,
+          0.0,
+          -4.0
+        ]
+      ]
+    },
+    "step_actual": {
+      "dimensions_mm": [
+        100.0,
+        60.0,
+        8.0
+      ],
+      "volume_mm3": 47095.2213157661,
+      "solid_count": 1,
+      "thickness_mm": 8.0,
+      "bore_diameters_mm": [
+        12.0
+      ],
+      "rim_centres_mm": [
+        [
+          0.0,
+          0.0,
+          4.0
+        ],
+        [
+          0.0,
+          0.0,
+          -4.0
+        ]
+      ]
+    },
+    "status": "PASS",
+    "engineering_status": "PASS",
+    "execution_status": "PASS",
+    "exit_code": 0,
+    "errors": []
+  },
+  "historical_checks": {
+    "build": {
+      "status": "PASS"
+    },
+    "occ_valid": {
+      "status": "PASS",
+      "actual": true,
+      "expected": true
+    },
+    "solid_count": {
+      "status": "PASS",
+      "actual": 1,
+      "expected": 1
+    },
+    "dimensions": {
+      "status": "PASS",
+      "actual": [
+        100.0,
+        60.0,
+        8.0
+      ],
+      "expected": [
+        100.0,
+        60.0,
+        8.0
+      ],
+      "tolerance": {
+        "absolute_mm": 1e-06
+      }
+    },
+    "thickness": {
+      "status": "PASS",
+      "actual": 8.0,
+      "expected": 8.0,
+      "tolerance": {
+        "absolute_mm": 1e-06
+      }
+    },
+    "hole_diameter": {
+      "status": "PASS",
+      "actual": [
+        12.0
+      ],
+      "expected": [
+        12.0
+      ],
+      "tolerance": {
+        "absolute_mm": 1e-06
+      }
+    },
+    "hole_position": {
+      "status": "PASS",
+      "actual": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "expected": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "tolerance": {
+        "absolute_mm": 1e-06
+      }
+    },
+    "through_hole": {
+      "status": "PASS",
+      "actual": {
+        "rim_z_mm": [
+          -4.0,
+          4.0
+        ],
+        "bore_spans_thickness": true,
+        "axis_empty": true
+      },
+      "expected": {
+        "rim_z_mm": [
+          -4.0,
+          4.0
+        ],
+        "bore_spans_thickness": true,
+        "axis_empty": true
+      },
+      "tolerance": {
+        "absolute_mm": 1e-06
+      }
+    },
+    "volume": {
+      "status": "PASS",
+      "actual": 47095.22131576614,
+      "expected": 47095.22131576614,
+      "tolerance": {
+        "absolute_mm3": 0.001,
+        "relative": 1e-08
+      }
+    },
+    "step_export": {
+      "status": "PASS",
+      "bytes": 19082
+    },
+    "stl_export": {
+      "status": "PASS",
+      "bytes": 26084
+    },
+    "step_import": {
+      "status": "PASS"
+    },
+    "step_occ_valid": {
+      "status": "PASS",
+      "actual": true,
+      "expected": true
+    },
+    "step_solid_count": {
+      "status": "PASS",
+      "actual": 1,
+      "expected": 1
+    },
+    "step_dimensions": {
+      "status": "PASS",
+      "actual": [
+        100.0,
+        60.0,
+        8.0
+      ],
+      "expected": [
+        100.0,
+        60.0,
+        8.0
+      ],
+      "tolerance": {
+        "absolute_mm": 1e-06
+      }
+    },
+    "step_thickness": {
+      "status": "PASS",
+      "actual": 8.0,
+      "expected": 8.0,
+      "tolerance": {
+        "absolute_mm": 1e-06
+      }
+    },
+    "step_hole_diameter": {
+      "status": "PASS",
+      "actual": [
+        12.0
+      ],
+      "expected": [
+        12.0
+      ],
+      "tolerance": {
+        "absolute_mm": 1e-06
+      }
+    },
+    "step_hole_position": {
+      "status": "PASS",
+      "actual": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "expected": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "tolerance": {
+        "absolute_mm": 1e-06
+      }
+    },
+    "step_through_hole": {
+      "status": "PASS",
+      "actual": {
+        "rim_z_mm": [
+          -4.0,
+          4.0
+        ],
+        "bore_spans_thickness": true,
+        "axis_empty": true
+      },
+      "expected": {
+        "rim_z_mm": [
+          -4.0,
+          4.0
+        ],
+        "bore_spans_thickness": true,
+        "axis_empty": true
+      },
+      "tolerance": {
+        "absolute_mm": 1e-06
+      }
+    },
+    "step_volume": {
+      "status": "PASS",
+      "actual": 47095.2213157661,
+      "expected": 47095.22131576614,
+      "tolerance": {
+        "absolute_mm3": 0.001,
+        "relative": 1e-08
+      }
+    },
+    "stl_import_bounds": {
+      "status": "PASS",
+      "actual": [
+        100.0000002,
+        60.0000002,
+        8.0000002
+      ],
+      "expected": [
+        100.0,
+        60.0,
+        8.0
+      ],
+      "tolerance": {
+        "absolute_mm": 1e-05
+      }
+    },
+    "viewer": {
+      "status": "PASS",
+      "reason": "Viewer returned scene status; not visual acceptance"
+    },
+    "image_top": {
+      "status": "PASS",
+      "reason": "Fresh PNG captured; visual review is separate"
+    },
+    "image_side": {
+      "status": "PASS",
+      "reason": "Fresh PNG captured; visual review is separate"
+    },
+    "image_iso": {
+      "status": "PASS",
+      "reason": "Fresh PNG captured; visual review is separate"
+    },
+    "visual_review": {
+      "status": "NOT_CHECKED",
+      "reason": "Image capture is not visual acceptance; inspect PNGs separately"
+    }
+  },
+  "historical_not_checked": {
+    "visual_review": {
+      "status": "NOT_CHECKED",
+      "reason": "Image capture is not visual acceptance; inspect PNGs separately"
+    }
+  },
+  "historical_source_root": "models/plate",
+  "historical_source_sha256": {},
+  "historical_dependency_source_sha256": {},
+  "selected_artifacts": {
+    "plate_100.step": {
+      "bytes": 19082,
+      "sha256": "67ef61d7b2e1048b29b752d48ddda3f201736462e16c9ed768c7c99e4aef7d34"
+    },
+    "plate_100.stl": {
+      "bytes": 26084,
+      "sha256": "1fc29702fe61f3d4a70ccd0f4570eead7af340557c7f885114383aa699c03608"
+    },
+    "iso.png": {
+      "bytes": 8584,
+      "sha256": "7560b9b49210ad8a7b5799de3c0acabd24a28688ecfe5b0440587facda828352"
+    }
+  },
+  "limits": "Historical digital prototype. Images do not prove dimensions. No new geometry run, STEP round-trip, tests, physical validation or manufacturing approval was performed for this curated example."
+}

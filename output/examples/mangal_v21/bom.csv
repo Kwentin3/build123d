@@ -1,0 +1,4 @@
+part,quantity,material,thickness_mm,width_mm,height_mm,area_mm2,volume_mm3,density_kg_m3,unit_mass_kg,total_mass_kg,cutting_file
+side,2,S235JR (provisional),3,544.0,160.0,80532.30847738135,241596.92543214394,7850,1.89653586464233,3.79307172928466,side.dxf
+end,2,S235JR (provisional),3,346.0,340.0,83321.88958727165,249965.668761815,7850,1.9622304997802478,3.9244609995604955,end.dxf
+bottom,1,S235JR (provisional),3,506.0,294.0,145955.99999999997,437868.0,7850,3.4372638,3.4372638,bottom.dxf

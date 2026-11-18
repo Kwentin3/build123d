@@ -1,0 +1,3 @@
+# Preserve generated snapshot bytes/formatting and their SHA-256 on checkout.
+# Source files retain normal whitespace checks.
+output/examples/** -text -whitespace
