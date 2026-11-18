@@ -1,0 +1,34 @@
+{
+  "verification": {
+    "status": "PASS",
+    "commit": "9a1619e7006ed6deef48310c442529b0425a802d",
+    "manifest_path": "docs/engineering-review/acceptance.json",
+    "manifest_git_blob_sha256": "8ef85f26ecd5f53febc04437623c2ca9cf2f084252803e4fe966dcb9404157e0",
+    "representation": "raw-git-blob-bytes-v1",
+    "normalization": "none",
+    "counts": {
+      "source_sha256": 18,
+      "artifact_sha256": 22
+    },
+    "delivery_bindings": 40,
+    "historical_bindings": 37,
+    "historical_windows_manifest_sha256": "78b560532d2a4c7e8dc48f2156e14493c304ec8533b15b3b46e44dd68d4e96ac",
+    "original_git_manifest_sha256": "7cdddaba7327ac389a557d30251fb3c762921768c41189416a81cc7bc1bb19b8",
+    "historical_reference_commit": "fadedbab0a4040630906d23857354be9bd4aa40c",
+    "errors": []
+  },
+  "origin": "git fetch origin work/issue3-engineering-patterns, followed by verifier reading FETCH_HEAD raw Git blobs",
+  "scope_note": "This receipt and GOAL.md are not in the source/artifact maps; rerun verifier on the current published ref",
+  "initial_publication": {
+    "commit": "fadedbab0a4040630906d23857354be9bd4aa40c",
+    "source_artifact_bindings": 37,
+    "crlf_mismatches": 16
+  },
+  "negative_control": {
+    "status": "expected FAIL",
+    "change": "One added LF in one target Git blob, without manifest update",
+    "mismatching_path": "docs/engineering-review/evidence/measurements.json",
+    "mismatch_count": 1,
+    "branch_and_checkout_unchanged": true
+  }
+}
