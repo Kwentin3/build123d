@@ -1,0 +1,30 @@
+{
+  "scope": "Nominal visual module and three unchanged clock housings",
+  "pytest": {
+    "tests": 127,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 423.401
+  },
+  "pytest_xml_sha256": "7afa82bb131a8a541e3c8d311d4eed84276a43209baff125ed4bf45cfa9dc33d",
+  "protected_files": 111,
+  "independent_review": "PASS",
+  "pdf_pages": {
+    "module-drawing": 1,
+    "assembled": 1
+  },
+  "report_sha256": "ee9635c188d22c5c48e1ef92337a6d7e1f0bf70a968c2e9398473a95fd4c2f16",
+  "limitations": [
+    "OEM shoulder/profile and decorative details illustrative",
+    "Lens, mounting ring, mechanism and hardware not modeled",
+    "Physical fit, retention and production properties NOT_CHECKED"
+  ],
+  "archive_files": 41,
+  "artifact_sha256": {
+    "assembled.pdf": "32bce62a3c68617c65741d61b241f8570d3db8d86a81fefa31f668e03a5e8331",
+    "assembled.png": "716a52ac631ffd8cffd29b1fb51026e99a954be7410a580db593d004b434755b",
+    "clock-module-assembled.zip": "23ed252159275d794902f48084d384513e0ac8c18141846396a7386a826f535f",
+    "module-drawing.pdf": "b5b664065ba13cecfd4111181f6615ac055c171bf7016a6bf1033801a1792be5"
+  }
+}
