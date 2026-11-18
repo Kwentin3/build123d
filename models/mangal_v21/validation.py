@@ -1,12 +1,85 @@
 """V2.1: native BREP validation of five plates and keyless V release."""
+from dataclasses import asdict
 from itertools import combinations
-from math import atan2, degrees
+from math import atan2, degrees, isfinite
 
 from build123d import Box, Compound, GeomType, Pos, Vector
 from OCP.BRepCheck import BRepCheck_Analyzer
 
 from models.mangal.validation import (LENGTH_TOL, VOLUME_TOL, intersection_volume,
                                       motion_collision)
+
+
+def check_guide_change(before_model, after_model, before_params, after_params):
+    """Check only a guide-up redistribution against an accepted V2.1 baseline.
+
+    Both models still need validate_geometry. This contract measures material
+    changes; it does not establish baseline acceptance or physical safety.
+    Invalid inputs and failed native operations raise rather than pass.
+    """
+    tolerance = .01  # mm3, as in this model's STEP round-trip check
+    before_params.validate()
+    after_params.validate()
+    old_parameters, new_parameters = asdict(before_params), asdict(after_params)
+    changed = sorted(n for n in old_parameters.keys() | new_parameters.keys()
+                     if old_parameters.get(n) != new_parameters.get(n))
+    if set(changed) - {"guide_up_allowance"}:
+        raise ValueError("Guide change permits only guide_up_allowance")
+    required = {"side_1", "side_2", "end_1", "end_2", "bottom"}
+
+    def inventory(model):
+        shapes = list(model["parts"])
+        labels = [q.label for q in shapes]
+        if len(labels) != 5 or len(set(labels)) != 5 or set(labels) != required:
+            raise ValueError("Guide change requires five unique complete part labels")
+        for shape in shapes:
+            if (not BRepCheck_Analyzer(shape.wrapped).IsValid()
+                    or len(shape.solids()) != 1 or not isfinite(shape.volume) or shape.volume <= 0):
+                raise ValueError("Guide change requires valid positive single-solid parts")
+        return dict(zip(labels, shapes))
+
+    before, after = inventory(before_model), inventory(after_model)
+
+    def difference(a, b):
+        common = intersection_volume(a, b)
+        removed, added = a.volume-common, b.volume-common
+        if not all(isfinite(v) for v in (removed, added)) or min(removed, added) < -tolerance:
+            raise ValueError("Native material comparison returned inconsistent volumes")
+        return dict(removed_mm3=max(0., removed), added_mm3=max(0., added),
+                    symmetric_difference_mm3=max(0., removed)+max(0., added))
+
+    p = before_params
+    delta = after_params.guide_up_allowance-p.guide_up_allowance
+    checks = {"guide_change_scope": dict(status="PASS", actual=dict(
+        changed_parameters=changed, guide_translation_mm=delta),
+        expected="only guide_up_allowance; accepted baseline and full geometry checks required")}
+    for name in sorted(required):
+        baseline, target = before[name], after[name]
+        expected = baseline
+        if name.startswith("end"):
+            slab = baseline.bounding_box()
+            margin = .01
+            low = p.lower_z-p.guide_down_allowance-p.relief_radius-margin
+            high = p.lower_z+20+p.guide_up_allowance+p.relief_radius+margin
+            for center in (-p.thickness/2, p.width+p.thickness/2):
+                roi = Pos((slab.min.X+slab.max.X)/2, center, (low+high)/2)*Box(
+                    slab.size.X, p.thickness+p.clearance+2*p.relief_radius+2*margin, high-low)
+                # Copy the real accepted void, including its dogbones. The crop
+                # surrounds only this receiver, never the whole lower Z band.
+                void = roi-baseline
+                if not void.is_valid or not isfinite(void.volume) or void.volume <= tolerance:
+                    raise ValueError("Baseline lower receiver void could not be measured")
+                expected = (expected+void)-void.translate((0, 0, delta))
+            if not expected.is_valid or len(expected.solids()) != 1:
+                raise ValueError("Expected guide translation did not produce one valid solid")
+        actual = difference(baseline, target)
+        unexpected = difference(expected, target)
+        actual["unexpected_mm3"] = unexpected["symmetric_difference_mm3"]
+        checks["guide_change_"+name] = dict(
+            status="PASS" if actual["unexpected_mm3"] < tolerance else "FAIL", actual=actual,
+            expected=dict(unexpected_mm3_below=tolerance,
+                          change="translated lower receiver voids" if name.startswith("end") else "unchanged"))
+    return checks
 
 
 def validate_geometry(model, p):

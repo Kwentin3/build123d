@@ -15,6 +15,12 @@ model, create `models/<name>/model.py`, its own requirements/checks and
 `output/<name>/`; follow the plate example without inheriting its dimensions.
 Do not generalize a product's geometry into infrastructure.
 
+Before editing an existing model, capture the accepted source revision and
+geometry separately from the candidate. State the allowed feature/parameters,
+protected bodies/placements, affected mates and checks. Do not regenerate the
+baseline from already edited code or mutate shared baseline shapes in place.
+Follow imports/parameter uses for this feature; do not read every product.
+
 Separate intended dimensions from measured geometry: read the task before
 changing expectations. Inspect topology/feature checks and reimport STEP after
 export. Load `../cad-validation/SKILL.md` for that verification. For placement

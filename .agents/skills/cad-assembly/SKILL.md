@@ -21,6 +21,14 @@ assembly sequence; inspect what the validator actually covers.
 load their implementation for this product only. Its inherited helpers remain
 at their current owners. Do not copy V-seats or dimensional rules into skills.
 
+Explore on demand: part labels and placement/motion records first, then the
+selected parameter's uses/imports, mating bodies and required checks, then
+only needed faces/edges. A compact computed inventory is enough for small
+assemblies; do not dump all topology or maintain a second dependency graph.
+Building the small assembly in OCCT does not imply lazy geometry computation.
+After a joint edit rerun affected clearances, static intersections and complete
+existing motion sequence, plus mandatory regressions and dependent exports.
+
 Load `../cad-validation/SKILL.md` for evidence and freshness. Load
 `../cad-manufacturing/SKILL.md` if a proposed clearance depends on a real cutting
 process. Geometry/kinematics cannot confirm friction, manual forces, stability,

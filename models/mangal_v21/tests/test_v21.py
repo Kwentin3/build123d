@@ -1,14 +1,15 @@
 """V2.1 keyless acceptance and native-geometry defect regressions."""
 from dataclasses import replace
+from copy import copy
 import hashlib
 import json
 from pathlib import Path
 
 import pytest
-from build123d import Plane, Polygon, Pos, Rectangle, extrude
+from build123d import Box, Compound, Plane, Polygon, Pos, Rectangle, export_step, extrude, import_step
 
 from models.mangal_v21.model import Params, make_model, run
-from models.mangal_v21.validation import validate_geometry
+from models.mangal_v21.validation import check_guide_change, validate_geometry
 from models.mangal.validation import motion_collision
 
 
@@ -29,6 +30,130 @@ def test_v21_nominal_acceptance(nominal):
     assert {n: c for n, c in checks.items() if c["status"] != "PASS"} == {}
     assert len([n for n in checks if n.startswith("motion_")]) == 4
     assert checks["disassembly_terminal_inventory"]["actual"] == ["end_1"]
+
+
+@pytest.fixture(scope="module")
+def guide_variant(nominal):
+    p, _, _ = nominal
+    q = replace(p, guide_up_allowance=.8)
+    return q, make_model(q)
+
+
+def _with_part(model, label, replacement):
+    replacement.label = label
+    return dict(model, parts=[replacement if part.label == label else part for part in model["parts"]])
+
+
+def test_guide_change_noop_copy_and_reordered_inventory(nominal):
+    p, model, _ = nominal
+    copied = dict(model, parts=[copy(part) for part in reversed(model["parts"])])
+    checks = check_guide_change(model, copied, p, p)
+    assert all(c["status"] == "PASS" for c in checks.values())
+    assert all(c["actual"]["symmetric_difference_mm3"] < .01
+               for name, c in checks.items() if name != "guide_change_scope")
+
+
+def test_guide_change_measures_both_translated_receivers(nominal, guide_variant):
+    p, model, _ = nominal
+    q, candidate = guide_variant
+    assert all(c["status"] == "PASS" for c in validate_geometry(candidate, q).values())
+    checks = check_guide_change(model, candidate, p, q)
+    assert all(c["status"] == "PASS" for c in checks.values())
+    for name in ("side_1", "side_2", "bottom"):
+        assert checks["guide_change_"+name]["actual"]["symmetric_difference_mm3"] < .01
+    for name in ("end_1", "end_2"):
+        actual = checks["guide_change_"+name]["actual"]
+        assert actual["added_mm3"] > 1
+        assert actual["removed_mm3"] > 1
+        assert actual["unexpected_mm3"] < .01
+
+
+@pytest.mark.parametrize("defect", ["side_cut", "upper_notch", "central_lower_cut", "translated_end",
+                                  "only_one_end"])
+def test_guide_change_rejects_unrelated_valid_material_changes(nominal, guide_variant, defect):
+    p, model, _ = nominal
+    q, candidate = guide_variant
+    parts = {part.label: part for part in candidate["parts"]}
+    label = "side_1" if defect == "side_cut" else "end_1"
+    if defect == "side_cut":
+        replacement = parts[label]-Pos(100, -q.thickness/2, 250)*Box(4, q.thickness+2, 4)
+    elif defect == "upper_notch":
+        replacement = parts[label]-Pos(-q.thickness/2, q.width/2, q.leg_height+q.height-2)*Box(
+            q.thickness+2, 4, 10)
+    elif defect == "central_lower_cut":
+        replacement = parts[label]-Pos(-q.thickness/2, q.width/2, q.lower_z+10)*Box(
+            q.thickness+2, 4, 4)
+    elif defect == "translated_end":
+        replacement = parts[label].translate((.1, 0, 0))
+        assert replacement.volume == pytest.approx(parts[label].volume)
+    else:
+        label = "end_2"
+        replacement = copy(next(part for part in model["parts"] if part.label == label))
+    damaged = _with_part(candidate, label, replacement)
+    assert replacement.is_valid and len(replacement.solids()) == 1
+    checks = check_guide_change(model, damaged, p, q)
+    assert checks["guide_change_"+label]["status"] == "FAIL"
+    assert checks["guide_change_"+label]["actual"]["unexpected_mm3"] > .01
+    if defect == "side_cut":
+        # Existing dimensional and motion acceptance does not protect arbitrary
+        # material away from its probes. The baseline contract must still fail.
+        assert all(c["status"] == "PASS" for c in validate_geometry(damaged, q).values())
+
+
+@pytest.mark.parametrize("defect", ["missing", "duplicate", "extra", "invalid_body"])
+def test_guide_change_refuses_malformed_inventory(nominal, defect):
+    p, model, _ = nominal
+    parts = [copy(part) for part in model["parts"]]
+    if defect == "missing":
+        parts.pop()
+    elif defect == "duplicate":
+        parts[-1].label = parts[0].label
+    elif defect == "extra":
+        parts.append(copy(parts[0]))
+    else:
+        parts[-1] = Rectangle(1, 1)
+        parts[-1].label = "bottom"
+    with pytest.raises(ValueError, match="five unique|single-solid"):
+        check_guide_change(model, dict(model, parts=parts), p, p)
+
+
+def test_guide_change_refuses_other_parameter_changes(nominal):
+    p, model, _ = nominal
+    with pytest.raises(ValueError, match="only guide_up_allowance"):
+        check_guide_change(model, model, p, replace(p, length=p.length+1))
+
+
+def test_guide_change_step_roundtrip_requires_unambiguous_labels(nominal, guide_variant, tmp_path):
+    p, model, _ = nominal
+    q, candidate = guide_variant
+    path = tmp_path/"guide.step"
+    export_step(Compound(children=[copy(part) for part in candidate["parts"]]), str(path))
+    restored = import_step(str(path))
+    imported = dict(candidate, parts=list(restored.children))
+    labels = [part.label for part in imported["parts"]]
+    if len(set(labels)) != 5:
+        # Shared STEP products can lose occurrence labels. Refuse that actual
+        # import instead of repairing identities by position or list order.
+        with pytest.raises(ValueError, match="five unique"):
+            check_guide_change(model, imported, p, q)
+    else:
+        assert all(c["status"] == "PASS" for c in check_guide_change(model, imported, p, q).values())
+
+
+def test_guide_change_checks_individually_bound_step_parts(nominal, guide_variant, tmp_path):
+    p, model, _ = nominal
+    q, candidate = guide_variant
+    imported_parts = []
+    for part in candidate["parts"]:
+        path = tmp_path/(part.label+".step")
+        export_step(part, str(path))
+        restored = import_step(str(path))
+        # One explicit file per source label preserves the correspondence
+        # without guessing which repeated product an assembly occurrence was.
+        restored.label = path.stem
+        imported_parts.append(restored)
+    checks = check_guide_change(model, dict(candidate, parts=imported_parts), p, q)
+    assert all(c["status"] == "PASS" for c in checks.values())
 
 
 def test_v21_sequential_pose_is_required(nominal):

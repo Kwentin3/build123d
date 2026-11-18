@@ -16,9 +16,9 @@ import sys
 from build123d import Box, Cylinder, export_step, export_stl, import_step, import_stl
 
 if __package__:
-    from .validation import CHECK_NAMES, check_plate
+    from .validation import CHECK_NAMES, check_bore_change, check_plate
 else:
-    from validation import CHECK_NAMES, check_plate
+    from validation import CHECK_NAMES, check_bore_change, check_plate
 
 OUTPUT_DIR = Path(__file__).resolve().parents[2] / "output" / "plate"
 
@@ -53,7 +53,7 @@ def export_plate(plate, output_dir, name):
 
 
 def run_plate(width=WIDTH, output_dir=OUTPUT_DIR, *, expected=None,
-              show_model=False, screenshots=False):
+              show_model=False, screenshots=False, bore_baseline=None):
     """One plate run: report, measured checks, exports and optional native views.
 
     Exit codes: 0 required checks passed, 1 engineering mismatch, 2 execution error.
@@ -70,6 +70,8 @@ def run_plate(width=WIDTH, output_dir=OUTPUT_DIR, *, expected=None,
     checks = report["checks"]
     required = ["build", *CHECK_NAMES, "step_export", "stl_export", "step_import",
                 *(f"step_{name}" for name in CHECK_NAMES), "stl_import_bounds"]
+    if bore_baseline is not None:
+        required.extend(("bore_change", "step_bore_change"))
     for name in [*required, "viewer", "image_top", "image_side", "image_iso", "visual_review"]:
         checks[name] = {"status": "NOT_CHECKED", "reason": "Stage has not run"}
     checks["visual_review"]["reason"] = "Image capture is not visual acceptance; inspect PNGs separately"
@@ -92,6 +94,17 @@ def run_plate(width=WIDTH, output_dir=OUTPUT_DIR, *, expected=None,
         stage = "geometry"
         report["actual"], measured = check_plate(plate, expected)
         checks.update(measured)
+        if bore_baseline is not None:
+            stage = "bore_change"
+            baseline_path = Path(bore_baseline).resolve()
+            # Bind the actual consumed bytes; no matching by face index or STEP text.
+            baseline_bytes = baseline_path.read_bytes()
+            baseline = import_step(str(baseline_path))
+            if baseline_path.read_bytes() != baseline_bytes:
+                raise ValueError("Baseline changed while importing")
+            report["bore_baseline"] = {"file": baseline_path.name,
+                                       "sha256": hashlib.sha256(baseline_bytes).hexdigest()}
+            checks.update(check_bore_change(baseline, plate, expected))
         stage = "export"
         # Keep the established Unicode-safe native export helper unchanged.
         paths = export_plate(plate, output_dir, f"plate_{width:g}")
@@ -104,6 +117,10 @@ def run_plate(width=WIDTH, output_dir=OUTPUT_DIR, *, expected=None,
         stage = "step_geometry"
         report["step_actual"], measured = check_plate(imported, expected)
         checks.update({f"step_{key}": value for key, value in measured.items()})
+        if bore_baseline is not None:
+            stage = "step_bore_change"
+            checks.update({f"step_{key}": value for key, value in
+                           check_bore_change(baseline, imported, expected).items()})
         stage = "stl_import_bounds"
         with chdir(output_dir):
             size = import_stl(paths[1].name).bounding_box().size
@@ -189,8 +206,10 @@ def main():
     parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
     parser.add_argument("--show", action="store_true", help="Send to the VS Code OCP CAD Viewer")
     parser.add_argument("--screenshots", action="store_true", help="Capture top/right/iso PNGs using the running viewer")
+    parser.add_argument("--bore-baseline", type=Path, help="Accepted STEP before a centred bore-diameter-only edit")
     args = parser.parse_args()
-    return run_plate(args.width, args.output_dir, show_model=args.show, screenshots=args.screenshots)
+    return run_plate(args.width, args.output_dir, show_model=args.show,
+                     screenshots=args.screenshots, bore_baseline=args.bore_baseline)
 
 
 if __name__ == "__main__":

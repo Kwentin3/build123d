@@ -2,7 +2,7 @@
 
 import math
 
-from build123d import GeomType
+from build123d import Cylinder, GeomType
 from OCP.BRepCheck import BRepCheck_Analyzer
 
 LENGTH_TOL_MM = 1e-6
@@ -73,3 +73,42 @@ def check_plate(plate, expected):
            plate.volume, expected_volume,
            {"absolute_mm3": VOLUME_ABS_TOL_MM3, "relative": VOLUME_REL_TOL})
     return actual, checks
+
+
+def check_bore_change(before, after, expected):
+    """Only a centred bore diameter may change; preserve the accepted body/placement.
+
+    `before` must come from the accepted geometry, captured before source edits.
+    This is a plate-specific contract, not a general shape comparison API.
+    """
+    cylinders = before.faces().filter_by(GeomType.CYLINDER)
+    if len(cylinders) != 1:
+        raise ValueError("Baseline must have exactly one cylindrical bore")
+    baseline_expected = dict(expected, hole_diameter=2 * cylinders[0].radius)
+    _, baseline_checks = check_plate(before, baseline_expected)
+    if any(c["status"] != "PASS" for c in baseline_checks.values()):
+        raise ValueError("Baseline does not satisfy the protected plate dimensions and centred bore")
+    diameter, thickness = expected["hole_diameter"], expected["thickness"]
+    if not math.isfinite(diameter) or not 0 < diameter < min(expected["width"], expected["height"]):
+        raise ValueError("Requested bore must be finite, positive and inside the plate")
+    if not after.is_valid or len(after.solids()) != 1:
+        raise ValueError("Candidate must be one valid solid")
+    # Recover the body from the accepted bore, then apply only the requested cut.
+    target = (before + Cylinder(cylinders[0].radius, thickness)) - Cylinder(diameter / 2, thickness)
+    if not target.is_valid or len(target.solids()) != 1:
+        raise ValueError("Could not construct the expected bore-only change")
+
+    def volume(shape):
+        return sum(s.volume for s in shape.solids())
+
+    removed = volume(before - after)
+    added = volume(after - before)
+    unexpected = volume(target - after) + volume(after - target)
+    return {"bore_change": {
+        "status": "PASS" if unexpected <= VOLUME_ABS_TOL_MM3 else "FAIL",
+        "actual": {"removed_mm3": removed, "added_mm3": added,
+                   "symmetric_difference_mm3": removed + added, "unexpected_mm3": unexpected},
+        "expected": {"baseline_diameter_mm": baseline_expected["hole_diameter"],
+                     "diameter_mm": diameter, "protected": "All other body geometry and placement"},
+        "tolerance": {"absolute_mm3": VOLUME_ABS_TOL_MM3},
+    }}

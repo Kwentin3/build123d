@@ -85,11 +85,18 @@ def step_roundtrip(m,out):
         reason='Spatially matched five separate re-imported STEP solids')
 
 
-def run(p=Params(),output_dir=OUTPUT_DIR,take_screenshots=False):
-    from models.mangal_v21.validation import validate_geometry
+def run(p=Params(),output_dir=OUTPUT_DIR,take_screenshots=False,*,guide_baseline=None):
+    """Optionally compare with an accepted (model, Params) captured before editing.
+
+    Keep baseline bodies separate and unmodified; this run never establishes
+    their acceptance. Only guide_up_allowance may differ in this contract.
+    """
+    from models.mangal_v21.validation import check_guide_change, validate_geometry
     from models.mangal_v21.exports import export_documents
     out=Path(output_dir).resolve();out.mkdir(parents=True,exist_ok=True)
     report=dict(release=RELEASE,parameters=asdict(p),checks={},artifacts={},errors=[])
+    if guide_baseline is not None:
+        report['checks']['guide_change']=dict(status='NOT_CHECKED',reason='Comparison has not run')
     produced=[]
     try:
         report['source_sha256']={s.name:hashlib.sha256(s.read_bytes()).hexdigest()
@@ -100,6 +107,16 @@ def run(p=Params(),output_dir=OUTPUT_DIR,take_screenshots=False):
         report['dependency_source_sha256']={n:hashlib.sha256((ROOT/n).read_bytes()).hexdigest() for n in deps}
         m=make_model(p)
         report['checks'].update(validate_geometry(m,p))
+        if guide_baseline is not None:
+            before,before_params=guide_baseline
+            report['guide_baseline']=dict(parameters=asdict(before_params),
+                parts=[dict(label=q.label,volume_mm3=q.volume,
+                            min_mm=list(q.bounding_box().min),max_mm=list(q.bounding_box().max))
+                       for q in before['parts']])
+            report['checks'].update(check_guide_change(before,m,before_params,p))
+            report['checks']['guide_change']=dict(status='PASS' if all(
+                v['status']=='PASS' for n,v in report['checks'].items() if n.startswith('guide_change_')) else 'FAIL',
+                reason='Compared all five bodies with the caller-supplied accepted baseline')
         report['checks']['step_roundtrip']=step_roundtrip(m,out)
         produced.append(out/'assembly.step')
         report['checks'].update(export_flat(m,p,out))
