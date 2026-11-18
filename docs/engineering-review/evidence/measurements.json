@@ -1,0 +1,331 @@
+{
+  "source": "D:\\Users\\Roman\\Desktop\\Проекты\\build123d\\output\\issue3-worktree\\output\\engineering-review\\pilot-input\\models\\filter_holder\\model.py",
+  "source_sha256": "b8ab7d74988ae7c5a01ba8111fc12594e0e4b9eac673d8d36aba9d20402a598c",
+  "script_sha256": "5574072a43a3116302f48a6be580619b1de8257538e617a4851fef7e5fbbc6e1",
+  "packages": {
+    "build123d": "0.13.0",
+    "OCP": "8.0.1.1"
+  },
+  "requirement": {
+    "direction": [
+      0,
+      1,
+      0
+    ],
+    "travel_mm": 90,
+    "frame_fixed": true,
+    "rotation_allowed": false,
+    "xz_motion_allowed": false
+  },
+  "bodies": {
+    "frame": {
+      "valid": true,
+      "solids": 1,
+      "faces": 19,
+      "volume_mm3": 61359.99999999999,
+      "bounds_mm": {
+        "min": [
+          -37.0,
+          -47.0,
+          -1.0
+        ],
+        "max": [
+          37.0,
+          47.0,
+          19.0
+        ],
+        "size": [
+          74.0,
+          94.0,
+          20.0
+        ]
+      }
+    },
+    "cartridge": {
+      "valid": true,
+      "solids": 1,
+      "faces": 6,
+      "volume_mm3": 28000.0,
+      "bounds_mm": {
+        "min": [
+          -25.0,
+          -35.0,
+          6.0
+        ],
+        "max": [
+          25.0,
+          35.0,
+          14.0
+        ],
+        "size": [
+          50.0,
+          70.0,
+          8.0
+        ]
+      }
+    }
+  },
+  "nominal_clearances_mm": {
+    "left_x": 2.0,
+    "right_x": 2.0,
+    "backing_z": 5.0,
+    "lower_shelf_y": 0.0,
+    "crossbar_y": 4.0
+  },
+  "feature_probes": {
+    "rails": {
+      "probe": {
+        "min": [
+          -40.0,
+          -30.0,
+          6.0
+        ],
+        "max": [
+          40.0,
+          30.0,
+          14.0
+        ],
+        "size": [
+          80.0,
+          60.0,
+          8.0
+        ]
+      },
+      "intersection": {
+        "min": [
+          -37.0,
+          -30.0,
+          6.0
+        ],
+        "max": [
+          37.0,
+          30.0,
+          14.0
+        ],
+        "size": [
+          74.0,
+          60.0,
+          8.0
+        ]
+      }
+    },
+    "backing": {
+      "probe": {
+        "min": [
+          -25.0,
+          -30.0,
+          -30.0
+        ],
+        "max": [
+          25.0,
+          30.0,
+          10.0
+        ],
+        "size": [
+          50.0,
+          60.0,
+          40.0
+        ]
+      },
+      "intersection": {
+        "min": [
+          -25.0,
+          -30.0,
+          -1.0
+        ],
+        "max": [
+          25.0,
+          30.0,
+          1.0
+        ],
+        "size": [
+          50.0,
+          60.0,
+          2.0
+        ]
+      }
+    },
+    "shelf": {
+      "probe": {
+        "min": [
+          -25.0,
+          -50.0,
+          6.0
+        ],
+        "max": [
+          25.0,
+          0.0,
+          14.0
+        ],
+        "size": [
+          50.0,
+          50.0,
+          8.0
+        ]
+      },
+      "intersection": {
+        "min": [
+          -25.0,
+          -43.0,
+          6.0
+        ],
+        "max": [
+          25.0,
+          -35.0,
+          14.0
+        ],
+        "size": [
+          50.0,
+          8.0,
+          8.0
+        ]
+      }
+    },
+    "crossbar": {
+      "probe": {
+        "min": [
+          -25.0,
+          35.0,
+          6.0
+        ],
+        "max": [
+          25.0,
+          50.0,
+          14.0
+        ],
+        "size": [
+          50.0,
+          15.0,
+          8.0
+        ]
+      },
+      "intersection": {
+        "min": [
+          -25.0,
+          39.0,
+          6.0
+        ],
+        "max": [
+          25.0,
+          45.0,
+          14.0
+        ],
+        "size": [
+          50.0,
+          6.0,
+          8.0
+        ]
+      }
+    }
+  },
+  "poses": [
+    {
+      "shift_y_mm": 0,
+      "overlap_volume_mm3": 0,
+      "distance_mm": 0.0
+    },
+    {
+      "shift_y_mm": 4,
+      "overlap_volume_mm3": 0,
+      "distance_mm": 0.0
+    },
+    {
+      "shift_y_mm": 4.001,
+      "overlap_volume_mm3": 0.40000000000190994,
+      "distance_mm": 0.0
+    },
+    {
+      "shift_y_mm": 10,
+      "overlap_volume_mm3": 2400.0,
+      "distance_mm": 0.0
+    },
+    {
+      "shift_y_mm": 45,
+      "overlap_volume_mm3": 2400.0,
+      "distance_mm": 0.0
+    },
+    {
+      "shift_y_mm": 74,
+      "overlap_volume_mm3": 2400.0,
+      "distance_mm": 0.0
+    },
+    {
+      "shift_y_mm": 79.999,
+      "overlap_volume_mm3": 0.4000000000019099,
+      "distance_mm": 0.0
+    },
+    {
+      "shift_y_mm": 80,
+      "overlap_volume_mm3": 0,
+      "distance_mm": 0.0
+    },
+    {
+      "shift_y_mm": 90,
+      "overlap_volume_mm3": 0,
+      "distance_mm": 8.246211251235321
+    }
+  ],
+  "continuous_sweep": {
+    "method": "Exact swept union of source-defined axis-aligned rectangular Box translated along +Y, 0..90 mm",
+    "bounds_mm": {
+      "min": [
+        -25.0,
+        -35.0,
+        6.0
+      ],
+      "max": [
+        25.0,
+        125.0,
+        14.0
+      ],
+      "size": [
+        50.0,
+        160.0,
+        8.0
+      ]
+    },
+    "obstruction": {
+      "valid": true,
+      "solids": 1,
+      "faces": 6,
+      "volume_mm3": 2400.0,
+      "bounds_mm": {
+        "min": [
+          -25.0,
+          39.0,
+          6.0
+        ],
+        "max": [
+          25.0,
+          45.0,
+          14.0
+        ],
+        "size": [
+          50.0,
+          6.0,
+          8.0
+        ]
+      }
+    },
+    "obstruction_outside_crossbar_mm3": 0
+  },
+  "analytic_collision": {
+    "method": "400 * max(0, min(35+s,45)-max(-35+s,39)); s in [0,90]",
+    "first_contact_mm": 4.0,
+    "positive_overlap_open_interval_mm": [
+      4.0,
+      80.0
+    ],
+    "maximum_overlap_mm3": 2400.0,
+    "maximum_overlap_shift_closed_interval_mm": [
+      10.0,
+      74.0
+    ],
+    "last_contact_mm": 80.0
+  },
+  "limitations": [
+    "Nominal rigid geometry only; no flexibility, force, loads, tolerances, material or process assessed.",
+    "No STEP export or image used; conclusions concern source-generated BREP.",
+    "External housing clearance accepted as supplied in README; external housing absent."
+  ]
+}

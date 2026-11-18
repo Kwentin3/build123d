@@ -1,0 +1,43 @@
+{
+    "product_input_root":  "D:/Users/Roman/Desktop/Проекты/build123d/output/issue3-worktree/output/engineering-review/pilot-input",
+    "read_product_files":  [
+                               {
+                                   "path":  "AGENTS.md",
+                                   "sha256":  "499726d4b6ac759243eccae3c52333ac7cdc8491376f1ce818ef9fd43a9f250c"
+                               },
+                               {
+                                   "path":  ".agents/skills/cad-entry/SKILL.md",
+                                   "sha256":  "0fc6df1539257067a8814a0184fa6bf1c651e98ad4ad26be70c9395b3d043c4a"
+                               },
+                               {
+                                   "path":  ".agents/skills/cad-validation/SKILL.md",
+                                   "sha256":  "231ffab2117a5d575d07d1c4a4795ee687fe892110c206281495c1c79095e9b6"
+                               },
+                               {
+                                   "path":  ".agents/skills/cad-assembly/SKILL.md",
+                                   "sha256":  "8cd9a2e73bf776c6f354c7cb91012d91ab22a046af06ecef717224ea1d3a9885"
+                               },
+                               {
+                                   "path":  ".agents/skills/cad-validation/references/functional-fit.md",
+                                   "sha256":  "5d99800900d251337e33c7529fb4d0fa4b1b5f0baf5ae322566ce92da6ff1570"
+                               },
+                               {
+                                   "path":  ".agents/skills/cad-validation/references/assembly-service.md",
+                                   "sha256":  "35ae530169c76cc68f7d6c174e5af85b2b78aa0a56888ce6b1da8212edc8c155"
+                               },
+                               {
+                                   "path":  "models/filter_holder/README.md",
+                                   "sha256":  "43b25872a5a3da1418007acdb6ab2d8350873167e5048c66e648980130191884"
+                               },
+                               {
+                                   "path":  "models/filter_holder/model.py",
+                                   "sha256":  "b8ab7d74988ae7c5a01ba8111fc12594e0e4b9eac673d8d36aba9d20402a598c"
+                               },
+                               {
+                                   "path":  "docs/engineering-review/sources.md",
+                                   "sha256":  "8f687182494e91ec808c21f03aa2e880e54f5c9a0fbac0d58543690eee066d63"
+                               }
+                           ],
+    "task_prompt":  "D:/Users/Roman/Desktop/Проекты/build123d/output/issue3-worktree/docs/engineering-review/evidence/pilot-prompt.txt",
+    "procedural_file":  "C:/Users/Администратор/.agents/windows-execution/README.md"
+}

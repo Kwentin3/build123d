@@ -1,0 +1,11 @@
+{
+  "tests": 115,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "seconds": 402.34,
+  "junit_sha256": "6071a94236fa390d33321b9a0414f1559e9b037826c15f751e56d84f6aae3039",
+  "protected_main_files": 54,
+  "model_source_bindings_fresh": true,
+  "step_artifact_bindings_fresh": true
+}
