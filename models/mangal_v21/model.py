@@ -90,15 +90,27 @@ def run(p=Params(),output_dir=OUTPUT_DIR,take_screenshots=False):
     from models.mangal_v21.exports import export_documents
     out=Path(output_dir).resolve();out.mkdir(parents=True,exist_ok=True)
     report=dict(release=RELEASE,parameters=asdict(p),checks={},artifacts={},errors=[])
+    produced=[]
     try:
+        report['source_sha256']={s.name:hashlib.sha256(s.read_bytes()).hexdigest()
+                                for s in Path(__file__).parent.glob('*.py')}
+        deps=('models/mangal/model.py','models/mangal/exports.py','models/mangal/validation.py',
+              'models/mangal/documentation.py','models/mangal_v2/model.py',
+              'models/mangal_wedge/mechanics.py','requirements.txt')
+        report['dependency_source_sha256']={n:hashlib.sha256((ROOT/n).read_bytes()).hexdigest() for n in deps}
         m=make_model(p)
         report['checks'].update(validate_geometry(m,p))
         report['checks']['step_roundtrip']=step_roundtrip(m,out)
+        produced.append(out/'assembly.step')
         report['checks'].update(export_flat(m,p,out))
+        produced.extend(out/(name+'.dxf') for name in m['profiles'])
+        produced.append(out/'layout.svg')
         export_documents(m,p,out,report)
+        produced.extend(out/name for name in report['artifacts']['documents'])
         report['checks']['viewer_images']=dict(status='NOT_CHECKED',reason='Run --screenshots with OCP CAD Viewer')
         if take_screenshots:
             report['artifacts']['screenshots']=release_screenshots(m,p,out)
+            produced.extend(Path(name) for name in report['artifacts']['screenshots'])
             report['checks']['viewer_images']=dict(status='PASS',reason='Fresh images, visual acceptance separate')
         report['checks']['visual_review']=dict(status='NOT_CHECKED',reason='Open current release PNGs')
         baseline=OUTPUT_DIR/'previous_versions_sha256.json'
@@ -118,14 +130,8 @@ def run(p=Params(),output_dir=OUTPUT_DIR,take_screenshots=False):
         'PASS' if geometry and all(v['status']=='PASS' for v in geometry) else 'NOT_CHECKED')
     report['execution_status']='FAIL' if report['errors'] else 'PASS'
     report['production_approval']='NOT_CHECKED'
-    report['source_sha256']={s.name:hashlib.sha256(s.read_bytes()).hexdigest()
-                            for s in Path(__file__).parent.glob('*.py')}
-    deps=('models/mangal/model.py','models/mangal/exports.py','models/mangal/validation.py',
-          'models/mangal/documentation.py','models/mangal_v2/model.py','models/mangal_wedge/mechanics.py')
-    report['dependency_source_sha256']={n:hashlib.sha256((ROOT/n).read_bytes()).hexdigest() for n in deps}
     report['artifacts']['sha256']={s.name:hashlib.sha256(s.read_bytes()).hexdigest()
-        for s in out.iterdir() if s.is_file() and s.suffix!='.zip'
-        and s.name not in ('report.json','visual_review.json','verification.json')}
+                                 for s in produced}
     (out/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False)+'\n',encoding='utf-8')
     print(f"Release {RELEASE}: geometry={report['geometry_status']}; execution={report['execution_status']}; {out/'report.json'}")
     return 2 if report['errors'] or report['geometry_status']=='NOT_CHECKED' else 1 if report['geometry_status']=='FAIL' else 0

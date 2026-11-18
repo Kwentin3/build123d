@@ -7,6 +7,7 @@ HOLE_DIAMETER = 12.0
 
 import argparse
 from contextlib import chdir
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -74,6 +75,10 @@ def run_plate(width=WIDTH, output_dir=OUTPUT_DIR, *, expected=None,
     checks["visual_review"]["reason"] = "Image capture is not visual acceptance; inspect PNGs separately"
     stage = "build"
     try:
+        report["source_sha256"] = {name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
+                                   for name in ("model.py", "validation.py")}
+        report["dependency_source_sha256"] = {"requirements.txt": hashlib.sha256(
+            (Path(__file__).resolve().parents[2] / "requirements.txt").read_bytes()).hexdigest()}
         nonfinite = False
         for values in (parameters, expected):
             for key, value in values.items():
@@ -162,6 +167,8 @@ def run_plate(width=WIDTH, output_dir=OUTPUT_DIR, *, expected=None,
     report["status"] = "FAIL" if technical or engineering else ("PASS" if required_pass else "NOT_CHECKED")
     exit_code = 2 if technical or not required_pass and not engineering else (1 if engineering else 0)
     report["exit_code"] = exit_code
+    report["artifacts"]["sha256"] = {Path(value).name: hashlib.sha256(Path(value).read_bytes()).hexdigest()
+                                     for value in report["artifacts"].values()}
     path = output_dir / "report.json"
     report["artifacts"]["report"] = str(path)
     try:

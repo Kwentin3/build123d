@@ -1,10 +1,13 @@
 """V2.1 keyless acceptance and native-geometry defect regressions."""
 from dataclasses import replace
+import hashlib
+import json
+from pathlib import Path
 
 import pytest
 from build123d import Plane, Polygon, Pos, Rectangle, extrude
 
-from models.mangal_v21.model import Params, make_model
+from models.mangal_v21.model import Params, make_model, run
 from models.mangal_v21.validation import validate_geometry
 from models.mangal.validation import motion_collision
 
@@ -103,3 +106,39 @@ def test_v21_insufficient_lower_roof_blocks_release(nominal):
     lift = next(m for m in model["motions"] if m["delta"][2] > 0
                 and set(m["moving"]) == {"side_1", "side_2"})
     assert checks["motion_"+lift["name"]]["status"] == "FAIL"
+
+
+def test_run_binds_only_current_artifacts(tmp_path):
+    stale = {"assembly_iso.png": b"old PNG", "old.pdf": b"old PDF"}
+    for name, content in stale.items():
+        (tmp_path / name).write_bytes(content)
+    assert run(output_dir=tmp_path) == 0
+    report = json.loads((tmp_path / "report.json").read_text(encoding="utf-8"))
+    expected = {"assembly.step", "side.dxf", "end.dxf", "bottom.dxf", "layout.svg",
+                "bom.csv", "bom.json", "instructions.md", "manufacturing.md",
+                "release_notes.md", "assembly_sequence.svg"}
+    assert set(report["artifacts"]["sha256"]) == expected
+    for name in expected:
+        assert report["artifacts"]["sha256"][name] == hashlib.sha256((tmp_path / name).read_bytes()).hexdigest()
+    for name, content in stale.items():
+        assert (tmp_path / name).read_bytes() == content
+    root = Path(__file__).resolve().parents[3]
+    assert report["dependency_source_sha256"]["requirements.txt"] == hashlib.sha256(
+        (root / "requirements.txt").read_bytes()).hexdigest()
+    assert report["checks"]["viewer_images"]["status"] == "NOT_CHECKED"
+    from models.mangal_v21.documentation import build
+    with pytest.raises(RuntimeError, match="Current screenshots"):
+        build(tmp_path)
+
+
+@pytest.mark.parametrize("status,listed,hashed", [
+    ("NOT_CHECKED", True, True), ("PASS", False, True), ("PASS", True, False)])
+def test_documentation_requires_current_screenshot_binding(tmp_path, status, listed, hashed):
+    from models.mangal_v21.documentation import build
+    names = ["assembly_iso.png", "assembly_top.png", "layout.png"]
+    report = {"release": "2.1", "checks": {"viewer_images": {"status": status}},
+              "artifacts": {"screenshots": names if listed else [],
+                            "sha256": dict.fromkeys(names, "unused") if hashed else {}}}
+    (tmp_path / "report.json").write_text(json.dumps(report), encoding="utf-8")
+    with pytest.raises(RuntimeError, match="Current screenshots"):
+        build(tmp_path)

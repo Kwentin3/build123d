@@ -1,5 +1,6 @@
 import math
 import json
+import hashlib
 from contextlib import chdir
 from pathlib import Path
 import subprocess
@@ -54,10 +55,18 @@ def test_cli_exports(tmp_path, width):
     assert report["checks"]["step_through_hole"]["status"] == "PASS"
     assert report["checks"]["visual_review"]["status"] == "NOT_CHECKED"
     assert report["checks"]["image_top"]["status"] == "NOT_CHECKED"
+    root = Path(__file__).parents[1]
+    assert report["source_sha256"] == {
+        name: hashlib.sha256((root / "models/plate" / name).read_bytes()).hexdigest()
+        for name in ("model.py", "validation.py")}
+    assert report["dependency_source_sha256"] == {
+        "requirements.txt": hashlib.sha256((root / "requirements.txt").read_bytes()).hexdigest()}
     step = tmp_path / f"plate_{width}.step"
     stl = tmp_path / f"plate_{width}.stl"
     assert step.stat().st_size > 0
     assert stl.stat().st_size > 0
+    assert report["artifacts"]["sha256"] == {
+        path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in (step, stl)}
     check_geometry(import_step(str(step)), width)
     # The native Windows STL reader has the same Unicode path limitation.
     with chdir(tmp_path):
@@ -68,7 +77,7 @@ def test_cli_exports(tmp_path, width):
 def test_wrong_expectation_produces_failure_report(tmp_path):
     code = (
         "from models.plate.model import run_plate; import sys; "
-        "sys.exit(run_plate(output_dir=sys.argv[1], expected="
+        "sys.exit(run_plate(width=100, output_dir=sys.argv[1], expected="
         "dict(width=120,height=60,thickness=8,hole_diameter=12)))"
     )
     result = subprocess.run([sys.executable, "-c", code, str(tmp_path)],
@@ -98,7 +107,8 @@ def test_build_error_is_technical_and_not_geometry_pass(tmp_path, bad_width):
     assert report["execution_status"] == "FAIL"
     assert report["engineering_status"] == "NOT_CHECKED"
     assert report["checks"]["dimensions"]["status"] == "NOT_CHECKED"
-    assert report["artifacts"] == {"report": str(tmp_path / "report.json")}
+    # A prior successful run left STEP/STL files, but the failed run binds none.
+    assert report["artifacts"] == {"report": str(tmp_path / "report.json"), "sha256": {}}
     assert report["errors"][0]["kind"] == "technical"
 
 

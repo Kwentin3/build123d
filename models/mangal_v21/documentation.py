@@ -23,6 +23,12 @@ def build(out, browser=None):
     report = json.loads(report_path.read_text(encoding='utf-8'))
     if report.get('release') != '2.1':
         raise ValueError('Expected release 2.1 report')
+    screenshots={Path(name).name for name in report['artifacts'].get('screenshots', [])}
+    required_images={'assembly_iso.png', 'assembly_top.png', 'layout.png'}
+    if (report['checks'].get('viewer_images', {}).get('status') != 'PASS'
+            or not required_images.issubset(screenshots)
+            or not required_images.issubset(report['artifacts'].get('sha256', {}))):
+        raise RuntimeError('Current screenshots are not bound to this report; rerun model --screenshots')
     for name, digest in report['source_sha256'].items():
         if hashlib.sha256((ROOT/'models'/'mangal_v21'/name).read_bytes()).hexdigest() != digest:
             raise RuntimeError(f'Source changed since report: {name}; rerun model')
@@ -44,7 +50,9 @@ def build(out, browser=None):
     lift = seat+p['release_margin']
     images = {name: data_image(out/name, crop=name.endswith('.png'), vector_weight=name == 'layout.svg')
               for name in ('assembly_iso.png', 'assembly_top.png', 'layout.png', 'layout.svg', 'assembly_sequence.svg')}
-    joint_image = data_image(out/'upper_joint.png', crop=True) if (out/'upper_joint.png').exists() else images['assembly_top.png']
+    joint_image = (data_image(out/'upper_joint.png', crop=True)
+                   if 'upper_joint.png' in screenshots and 'upper_joint.png' in report['artifacts']['sha256']
+                   else images['assembly_top.png'])
     css = '''@page{size:A4;margin:0}*{box-sizing:border-box}body{margin:0;color:#213446;font:10pt/1.4 Arial,sans-serif;print-color-adjust:exact;-webkit-print-color-adjust:exact}
 .page{width:210mm;height:297mm;padding:15mm 17mm 18mm;position:relative;page-break-after:always;overflow:hidden}.page:last-child{page-break-after:auto}
 header{font-size:8pt;color:#627789;border-bottom:1px solid #bccbd6;padding-bottom:3mm}h1{font-size:23pt;line-height:1.15;margin:7mm 0 5mm}h2{font-size:13pt;margin:5mm 0 2mm}p{margin:3mm 0}
