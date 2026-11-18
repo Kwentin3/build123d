@@ -14,10 +14,8 @@ WALL_DEPTH = 30.0
 PORTABLE_WIDTH = 110.0
 PORTABLE_HEIGHT = 116.0
 PORTABLE_DEPTH = 28.0
-LID_THICKNESS = 3.0
 CORNER_RADIUS = 10.0
 REAR_RELIEF = 98.0
-LID_SCREWS = ((-46., -48.), (-46., 48.), (46., -48.), (46., 48.))
 
 import argparse
 from contextlib import chdir
@@ -36,6 +34,9 @@ if str(ROOT) not in sys.path:
 
 from models.clock_family.interface import (
     DIAMETRAL_ALLOWANCE, INSTALL_DEPTH, installation_envelope, socket_cut)
+from models.clock_family.rear_joint import (
+    COVER_THICKNESS as LID_THICKNESS, add_rear_joint, cover_hardware, coupon,
+    wall_hardware, wall_keyholes)
 
 OUTPUT_DIR = ROOT / "output" / "clock_family"
 
@@ -50,28 +51,38 @@ def make_family(clearance=DIAMETRAL_ALLOWANCE):
     desk = cylinder_at(DESK_DIAMETER, 0, DESK_DEPTH)
     desk += Pos(0, -58, 10) * Box(FOOT_WIDTH, FOOT_HEIGHT, FOOT_DEPTH)
     desk = desk - socket - cylinder_at(REAR_RELIEF, INSTALL_DEPTH, DESK_DEPTH + 1)
+    desk_lid = cylinder_at(DESK_DIAMETER, DESK_DEPTH, DESK_DEPTH+LID_THICKNESS)
+    # The retained foot extends behind the case. Keep its upper face clear.
+    desk_lid -= Pos(0, -101.8, DESK_DEPTH+LID_THICKNESS/2) * Box(200, 100, 20)
+    desk, desk_lid = add_rear_joint(desk, desk_lid, DESK_DEPTH)
 
     wall = cylinder_at(WALL_DIAMETER, 0, WALL_DEPTH)
     wall = wall - socket - cylinder_at(118, INSTALL_DEPTH, WALL_DEPTH + 1)
-    for x in (-60, 60):
-        wall -= cylinder_at(4.5, -1, WALL_DEPTH + 1, x)
+    wall_lid = cylinder_at(WALL_DIAMETER, WALL_DEPTH, WALL_DEPTH+LID_THICKNESS)
+    wall, wall_lid = add_rear_joint(wall, wall_lid, WALL_DEPTH)
+    wall_lid = wall_keyholes(wall_lid, WALL_DEPTH)
 
     outline = RectangleRounded(PORTABLE_WIDTH, PORTABLE_HEIGHT, CORNER_RADIUS)
     portable = extrude(outline, amount=PORTABLE_DEPTH)
-    portable += cylinder_at(20, 0, 8, y=64)
     portable = portable - socket - cylinder_at(REAR_RELIEF, INSTALL_DEPTH, PORTABLE_DEPTH + 1)
-    portable -= cylinder_at(5, -1, 9, y=64)
+    portable += cylinder_at(20, 25, 33, y=64)
+    portable += Pos(0, 55, 26.5) * Box(14, 10, 13)
+    portable -= cylinder_at(5, 24, 34, y=64)
     lid = Pos(0, 0, PORTABLE_DEPTH) * extrude(outline, amount=LID_THICKNESS)
-    for x, y in LID_SCREWS:
-        portable -= cylinder_at(3.4, -1, PORTABLE_DEPTH + 1, x, y)
-        lid -= cylinder_at(3.4, PORTABLE_DEPTH - 1, PORTABLE_DEPTH + LID_THICKNESS + 1, x, y)
+    # An open notch lets the lid leave while the reinforced ear stays on body.
+    lid -= Pos(0, 74.75, 30.5) * Box(17, 50, 12)
+    portable, lid = add_rear_joint(portable, lid, PORTABLE_DEPTH)
 
     result = {}
-    for name, parts in (("desk", {"body": desk}), ("wall", {"body": wall}),
+    for name, parts in (("desk", {"body": desk, "lid": desk_lid}),
+                        ("wall", {"body": wall, "lid": wall_lid}),
                         ("portable", {"body": portable, "lid": lid})):
         for label, shape in parts.items():
             shape.label = label
-        result[name] = dict(name=name, parts=parts)
+        hardware = cover_hardware(WALL_DEPTH if name == "wall" else PORTABLE_DEPTH)
+        if name == "wall":
+            hardware.update(wall_hardware(WALL_DEPTH))
+        result[name] = dict(name=name, parts=parts, hardware=hardware)
     return result
 
 
@@ -127,6 +138,22 @@ def export_variant(model, out):
         # Explicit envelope is in a separate non-printing STEP.
         export_step(Compound(children=[*model["parts"].values(), installation_envelope()]),
                     "with_installation_envelope.step")
+        if model.get("hardware"):
+            for filename, shapes in (
+                    ("hardware.step", list(model["hardware"].values())),
+                    ("with_hardware.step", [*model["parts"].values(), *model["hardware"].values()])):
+                supplied = Compound(children=shapes)
+                if not export_step(supplied, filename):
+                    raise RuntimeError(f"Non-printing assembly export failed: {filename}")
+                returned = import_step(filename)
+                def key(solid):
+                    bb = solid.bounding_box()
+                    return tuple(round(v, 5) for v in (*bb.min, *bb.max, solid.volume, solid.area))
+                a, b = sorted(supplied.solids(), key=key), sorted(returned.solids(), key=key)
+                equal = len(a) == len(b) and all(key(x) == key(y) for x, y in zip(a, b))
+                checks[filename+"_roundtrip"] = dict(status="PASS" if returned.is_valid and equal else "FAIL",
+                    solid_count=len(b), expected_solids=len(a),
+                    scope="Per-solid bounds/volume/area; printed parts separately checked by Boolean difference")
     return checks, dict(name=model["name"], parts=restored)
 
 
@@ -153,6 +180,7 @@ def capture_viewer(family, out):
 
 
 def write_report(report, out):
+    report["hash_representation"] = "Observed runtime/export file bytes; preserved in release ZIP, not Git checkout text"
     report["source_sha256"] = source_bindings()
     report["dependency_source_sha256"] = {"requirements.txt": digest(ROOT / "requirements.txt")}
     report["artifacts_sha256"] = {p.relative_to(out).as_posix(): digest(p)
@@ -182,6 +210,16 @@ def run(output_dir=OUTPUT_DIR, clearance=DIAMETRAL_ALLOWANCE, screenshots=False,
             report["variants"][name] = {label: dict(volume_mm3=volume(s),
                 bounds_mm=[list(s.bounding_box().min), list(s.bounding_box().max)])
                 for label, s in model["parts"].items()}
+        with chdir(out):
+            for label, part in coupon().items():
+                stem = f"pilot-coupon-{label}"
+                if not export_step(part, stem+".step") or not export_stl(
+                        part, stem+".stl", tolerance=.001, angular_tolerance=.02):
+                    raise RuntimeError("Pilot coupon export failed")
+                restored_coupon = import_step(stem+".step")
+                delta = symmetric_difference(part, restored_coupon)
+                report["checks"][f"pilot_coupon_{label}_step"] = dict(
+                    status="PASS" if restored_coupon.is_valid and delta < 1e-3 else "FAIL", unexpected_mm3=delta)
         if screenshots:
             report["checks"]["ocp_viewer"] = capture_viewer(family, out)
         if drawings:

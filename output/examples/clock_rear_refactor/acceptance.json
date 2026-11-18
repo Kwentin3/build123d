@@ -1,0 +1,72 @@
+{
+  "status": "PASS",
+  "scope": "CAD prototype refactor and release; physical qualification NOT_CHECKED",
+  "base_commit": "0c365701b29654990fda00f66cb57ac102d5a70c",
+  "commit_scope": "Raw blobs in one explicitly chosen Git commit; acceptance.json itself excluded",
+  "geometry": {
+    "variants": [
+      "desk",
+      "wall",
+      "portable"
+    ],
+    "family_pass": 207,
+    "family_not_checked": 24,
+    "frozen_unexpected_material_mm3": 0,
+    "minimum_screw_bottom_reserve_mm": 1.85
+  },
+  "tests": {
+    "tests": "136",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "458.528"
+  },
+  "evidence": {
+    "family": "output/clock_family/rear-refactor/report.json",
+    "protected_geometry": "output/rear-refactor/refactor-report.json",
+    "change": "output/clock_family/rear-refactor-change/change-report.json",
+    "assemblies": "output/clock_module/rear-refactor/report.json",
+    "review": "output/rear-refactor/review.txt",
+    "pdf": "output/rear-refactor/pdf-verification.json"
+  },
+  "not_checked": [
+    "Physical PETG fit, torque/strip/pullout/thread life, strength and print process",
+    "Actual OEM mounting ring, retention and hands-on service",
+    "Actual wall material, anchors and load capacity"
+  ],
+  "delivery_source_sha256": {
+    "models/clock_family/drawings.py": "b72cfacd8ca8469f2adcf10006a67197a3cb902fa3f450dabe7e5d5a5473d245",
+    "models/clock_family/experiment.py": "3429f4e49bcd2714fe2bd498bed11b6c249446da7c33aa37cb30f70d7955f3c7",
+    "models/clock_family/interface.py": "c4bed6ee4800ebcdc9ed918741b006bf397714914d48581615e19bfce749160f",
+    "models/clock_family/model.py": "4ce1df8b492e1b732b831b695fe7865540d3d6caca9a783ade8824ed52c62d1e",
+    "models/clock_family/README.md": "4981f694d3002a8647c1a3d4be88954113f9fc254d435d80a141ec8f602fbd0f",
+    "models/clock_family/rear_joint.py": "d45b01d09acc16db9427a14863f89785592fdd4772289cb1658dbd8fa7e482a5",
+    "models/clock_family/REFACTOR.md": "be3a086c110d07f2840edd1967d75e44e113025c5475eaa921ed5b18504dc6b7",
+    "models/clock_family/refactor.py": "965a658634e8442cc05f2750ddfa6a7754c61f036aff273832ba68ca61a8b342",
+    "models/clock_family/SOURCES.md": "b7398cc7d061a8480d1ac80ba0e7c13b005ec56d0eff2885543d40c8634f0843",
+    "models/clock_family/test_exports.py": "9e8c4e823dff73d0d74972c3e439908b26c2019a9daf45fc36e6833fb89ab7be",
+    "models/clock_family/test_validation.py": "d273b1b7369c23a3a062e97518e3cf75899503f3fbb1df040623641b0b4fc51f",
+    "models/clock_family/validation.py": "ee655b7f3014570d2953960aa7a573ca170eec6d9944c3143ba57d0bc7de41f1",
+    "models/clock_module/model.py": "affd96b8d18df85c24567375d94b2ee451bfb5cf512544335a9f67351eee0630",
+    "models/clock_module/README.md": "df0a3a9eafee9cffbedcf8583ad3d839741abfe004d226c8950679ba4bd57e82",
+    "models/clock_module/test_module_visual.py": "c843f23f9a5223b4234566747af45ee6682a78ea99c8e0bfa757f2fbd4cb7cf9",
+    "requirements.txt": "9182233c8cdffd53b2571a5e7c9d9d2c5c57be7be565d353f700f1ca8463c856"
+  },
+  "delivery_artifact_sha256": {
+    "output/examples/clock_rear_refactor/assembled.pdf": "e3858289616c3b17e853bdafe7c412d5f865230f933209784ec084da88c32cf9",
+    "output/examples/clock_rear_refactor/assembled.png": "0181a88b05f971004bc4fc3b7d49a5498214e5739545be9c53823270662a00c4",
+    "output/examples/clock_rear_refactor/clock-rear-refactor.zip": "413cf466820eab928637e40938e816359cb9bc08ef58a51208379eb15aef303f",
+    "output/examples/clock_rear_refactor/exploded.pdf": "0504e8252cb07811ea74e6d9934d1c55cbeade4d2fa61bf213d52ab5377b34ef",
+    "output/examples/clock_rear_refactor/exploded.png": "33949ba42baaefa51046373733cc3709e16c0da282df30130d0544791f63d35b",
+    "output/examples/clock_rear_refactor/module-drawing.pdf": "6ffb5b967815f1ebe490da69cc8ec7f37d786058c922f14271a22be47743659f",
+    "output/examples/clock_rear_refactor/module-drawing.png": "25ceffc9403f4d933844845952f789d29d5fb73bd85b39921a525e5910f0edb8",
+    "output/examples/clock_rear_refactor/README.md": "f7334624b4d145d79c0d0f9771e860efa9c6a54feed2564c78365221752c356e",
+    "output/examples/clock_rear_refactor/rear.pdf": "53e20be59cd21d44ca04fc6bef7e060a930db658602f1c06a9925e61c5fd1e79",
+    "output/examples/clock_rear_refactor/rear.png": "28d425caaad9ad569af9cb481d27f46411ba9d661d9543d413ef140cdcf46a95"
+  },
+  "runtime_zip": {
+    "manifest": "release-manifest.json",
+    "members": 147,
+    "representation": "Original runtime/export bytes; inner report source hashes preserved"
+  }
+}

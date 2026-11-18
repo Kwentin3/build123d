@@ -28,8 +28,9 @@ meaning to the extracted 15 mm and 8 mm callouts.
 
 The design uses a **77.4 mm nominal sleeve bore and 22 mm installation depth**.
 The additional 0.4 mm on diameter is a design allowance, not a TFA specification.
-The sleeve is intended to accept the standard OEM mounting ring. The rear stays
-open for service; the portable variant has a removable rear cap.
+The sleeve is intended to accept the standard OEM mounting ring. Every housing
+now has a removable rear cover; service requires opening that cover (and first
+demounting the wall version). The rear-clearance assumption is geometric only.
 
 The published sources do not establish ring geometry, retention force, any
 thread size or pitch, allowable mounting-panel thickness, dimensional

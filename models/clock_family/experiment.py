@@ -16,7 +16,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from models.clock_family.interface import CHANGE_ALLOWANCE, DIAMETRAL_ALLOWANCE
-from models.clock_family.model import digest, make_family, run, source_bindings
+from models.clock_family.model import digest, run, source_bindings, symmetric_difference
 from models.clock_family.validation import check_change, validate_variant
 
 
@@ -54,6 +54,14 @@ def passed(checks):
     return bool(checks) and all(c["status"] == "PASS" for c in checks.values())
 
 
+def protected_hardware(before, after):
+    unexpected = symmetric_difference(before, after)
+    return dict(status="PASS" if before.is_valid and after.is_valid
+                and len(before.solids()) == len(after.solids()) and unexpected < 1e-3 else "FAIL",
+                unexpected_mm3=unexpected, tolerance_mm3=1e-3,
+                scope="All nominal hardware solids and their absolute placements protected")
+
+
 def experiment(baseline, out):
     baseline, out = Path(baseline).resolve(), Path(out).resolve()
     if baseline == out or baseline in out.parents or out in baseline.parents:
@@ -65,6 +73,8 @@ def experiment(baseline, out):
     before = load_parts(baseline, names)
     baseline_steps = {f"{n}/{label}.step": digest(baseline / n / f"{label}.step")
                       for n in names for label in before[n]}
+    baseline_steps.update({f"{n}/hardware.step": digest(baseline / n / "hardware.step")
+                           for n in names})
     report = dict(status="NOT_CHECKED", checks={}, negative_cases={},
                   baseline_report_sha256=digest(baseline / "report.json"),
                   baseline_step_sha256=baseline_steps,
@@ -75,6 +85,14 @@ def experiment(baseline, out):
     after = load_parts(out, names)
     for name in names:
         report["checks"][name] = check_change(before[name], after[name], .4, 1.)
+        old_hardware = import_step(str(baseline / name / "hardware.step"))
+        new_hardware = import_step(str(out / name / "hardware.step"))
+        report["checks"][name]["change_hardware"] = protected_hardware(old_hardware, new_hardware)
+    # A shifted hardware assembly must be rejected even when its own sizes fit.
+    hardware = import_step(str(out / "desk/hardware.step"))
+    hardware_checks = protected_hardware(hardware, Pos(.1, 0, 0) * hardware)
+    report["negative_cases"]["hardware_shifted"] = dict(
+        expected="FAIL", observed=hardware_checks, detected=hardware_checks["status"] == "FAIL")
     # An off-socket 1 mm3 internal notch must fail the change contract even if
     # the intended bore still measures correctly. Never modify accepted files.
     defective = dict(after["desk"])

@@ -22,9 +22,9 @@ from models.clock_family.interface import INSTALL_DIAMETER
 TITLES = {"desk": "Настольный · широкая опора", "wall": "Настенный · два винта",
           "portable": "Переносной · крышка и петля"}
 NOTES = {
-    "desk": "144 × 118 × 108 мм. Ось часов горизонтальна. Батарея и настройка доступны сзади.",
-    "wall": "Ø140 × 30 мм. Два отверстия Ø4.5, межосевое 120 мм. Для обслуживания снять со стены.",
-    "portable": "110 × 132 × 31 мм. Четыре M3×35 с гайками; крышку снять для обслуживания. Петля Ø5 мм."}
+    "desk": "144 × 118 × 108 мм. Задняя крышка на четырёх саморезах. Прежняя опора сохранена.",
+    "wall": "Ø140 × 35 мм. Скрытый съёмный подвес сзади. Для обслуживания снять со стены и открыть крышку.",
+    "portable": "110 × 132 × 33 мм. Четыре задних самореза; ушко Ø5 у задней плоскости, на корпусе."}
 
 
 def projection(parts, path, eye):
@@ -42,11 +42,13 @@ def export_drawings(family, out, clearance):
     for name, model in family.items():
         dest = out / name
         dest.mkdir(parents=True, exist_ok=True)
-        parts = list(model["parts"].values())
+        parts = [*model["parts"].values(), *model.get("hardware", {}).values()]
         projection([*parts, face], dest / "assembled.svg", (150, 100, -220))
         rear = [model["parts"]["body"]]
         if "lid" in model["parts"]:
             rear.append(Pos(0, 0, 36) * model["parts"]["lid"])
+        rear.extend(Pos(0, 0, 52)*p for n,p in model.get("hardware", {}).items()
+                    if n.startswith("cover_screw_"))
         projection(rear, dest / "service.svg", (-140, 100, 220))
         projection([model["parts"]["body"]], dest / "front.svg", (0, 0, -200))
         cards = "".join(f'<section><h2>{title}</h2><img src="{file}.svg"></section>'
@@ -61,7 +63,8 @@ img{{width:100%;height:540px;object-fit:contain}}p{{line-height:1.5}}small{{font
 <h1>{escape(TITLES[name])}</h1><p>{escape(NOTES[name])}</p><div class="cards">{cards}</div>
 <p>Общая посадка: Ø{INSTALL_DIAMETER + clearance:g} × 22 мм. TFA 60.3065.02, одна батарея AA. PETG / FDM — прототип.</p>
 <small>Штатная проекция build123d/OCCT. Диск показывает направление модуля; его профиль условный.
-Винты и штатное кольцо не показаны. Реальные допуски и удержание кольцом требуют образца.
+Саморезы показаны номинальными габаритами, без профиля резьбы. Штатное кольцо не воспроизведено.
+Реальные допуски и удержание кольцом требуют образца.
 Это чертёжная иллюстрация, а не подтверждение физической сборки или прочности.</small>'''
         (dest / "preview.html").write_text(page, encoding="utf-8")
     cards = "".join(f'<section><h2>{escape(TITLES[n])}</h2><img src="{n}/assembled.svg">'
