@@ -83,6 +83,7 @@ def make_module():
 def source_bindings():
     files = [*Path(__file__).parent.glob("*.py"), *Path(__file__).parent.glob("*.md"),
              ROOT / "models/clock_family/model.py", ROOT / "models/clock_family/interface.py",
+             ROOT / "models/clock_family/rear_joint.py",
              ROOT / "requirements.txt"]
     return {p.relative_to(ROOT).as_posix(): digest(p) for p in sorted(files)}
 
@@ -206,8 +207,10 @@ def capture_viewer(module, family, out):
         return dict(status="NOT_CHECKED", reason="Existing OCP Viewer unavailable")
     for name in ("module", *family):
         parts = dict(module) if name == "module" else {
-            **{f"housing_{n}": p for n, p in family[name]["parts"].items()}, **module}
-        colors = [COLORS.get(n, "#4d7d91" if n == "housing_body" else "#b69a70") for n in parts]
+            **{f"housing_{n}": p for n, p in family[name]["parts"].items()},
+            **family[name].get("hardware", {}), **module}
+        colors = [COLORS.get(n, "#4d7d91" if n == "housing_body" else
+                            "#b69a70" if n == "housing_lid" else "#8e9499") for n in parts]
         show(*parts.values(), names=list(parts), colors=colors, port=port,
              reset_camera=Camera.RESET, up="Y", ortho=True,
              position=(155, 100, -285), target=(0, 0, 0), zoom=1.25,
@@ -219,21 +222,47 @@ def capture_viewer(module, family, out):
         from PIL import Image
         with Image.open(path) as im:
             im.verify()
-    return dict(status="PASS", reason="Four current native CAD screenshots; inspect images separately")
+        if name != "module":
+            show(*parts.values(), names=list(parts), colors=colors, port=port,
+                 reset_camera=Camera.RESET, up="Y", ortho=True,
+                 position=(-155, 100, 285), target=(0, 0, 0), zoom=1.15,
+                 axes=False, axes0=False, grid=(False, False, False),
+                 clip_slider_0=0, clip_slider_1=0, clip_slider_2=0, clip_planes=False)
+            save_screenshot(str(out/f"{name}-rear.png"), port=port, timeout_s=10)
+            separated = {}
+            for label, part in parts.items():
+                if label.startswith("wall_screw_"):
+                    continue
+                shift = 32 if label == "housing_lid" else 48 if label.startswith("cover_screw_") else 0
+                # This is a labelled exploded illustration, not a motion proof.
+                separated[label] = Pos(0, 0, shift)*part if shift else part
+            separated_colors = [COLORS.get(n, "#4d7d91" if n == "housing_body" else
+                                "#b69a70" if n == "housing_lid" else "#8e9499") for n in separated]
+            show(*separated.values(), names=list(separated), colors=separated_colors, port=port,
+                 reset_camera=Camera.RESET, up="Y", ortho=True,
+                 position=(-180, 120, 285), target=(0, 0, 20), zoom=1.05,
+                 axes=False, axes0=False, grid=(False, False, False),
+                 clip_slider_0=0, clip_slider_1=0, clip_slider_2=0, clip_planes=False)
+            save_screenshot(str(out/f"{name}-exploded.png"), port=port, timeout_s=10)
+    return dict(status="PASS", reason="Current native front/rear/exploded CAD screenshots; inspect images separately")
 
 
 def assembly_page(out):
-    cards = "".join(f'<section><h2>{escape(title)}</h2><img src="{n}-assembled.png">'
-                    f'<p>Корпус + TFA 60.3065.02</p></section>' for n, title in TITLES.items())
-    (out / "assembled.html").write_text(f'''<!doctype html><meta charset="utf-8"><style>
+    for view, title, note in (
+        ("assembled", "Часы в сборе — сплошной фасад", "Модуль и крепёж показаны отдельными покупными деталями."),
+        ("rear", "Крепление сзади — три корпуса", "Четыре EJOT 3×12: головки утоплены. Подвес wall — отдельные саморезы в контрольный деревянный щит."),
+        ("exploded", "Задние крышки и крепёж", "Разнесённый вид поясняет детали; фактический путь снятия проверяется отдельно. Ушко остаётся на корпусе.")):
+        cards = "".join(f'<section><h2>{escape(t)}</h2><img src="{n}-{view}.png">'
+                        f'<p>Корпус + TFA 60.3065.02</p></section>' for n, t in TITLES.items())
+        (out / f"{view}.html").write_text(f'''<!doctype html><meta charset="utf-8"><style>
 @page{{size:A3 landscape;margin:8mm}}body{{font:18px Arial;background:#f2f3ef;color:#243c49;margin:25px}}
 h1{{font-size:32px;margin:12px 0}}.cards{{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}}
 section{{background:white;padding:14px;border-radius:10px}}h2{{font-size:22px;margin:8px 0}}
 img{{width:100%;height:490px;object-fit:contain}}p{{line-height:1.45}}small{{font-size:16px}}
-</style><h1>Часы в сборе — три корпуса</h1><p>Белый циферблат · серебристый обод · готовый модуль с питанием AA</p>
-<div class="cards">{cards}</div><p>Корпуса взяты без изменения из принятой модели. Циферблат и стрелки — отдельная покупная деталь.</p>
+</style><h1>{escape(title)}</h1><p>{escape(note)}</p>
+<div class="cards">{cards}</div><p>Текущая редакция корпусов с задними крышками. Циферблат и стрелки — отдельная покупная деталь.</p>
 <small>Нативные снимки фактической CAD-сборки. Модуль габаритный: профиль обода и положение буртика условны.
-Стекло, монтажное кольцо и крепёж не показаны. Физическая посадка не подтверждена.</small>''', encoding="utf-8")
+Стекло, монтажное кольцо и точные профили резьбы не воспроизведены. FDM/PETG-посадка и прочность требуют образца.</small>''', encoding="utf-8")
 
 
 def rasterize(out, browser):
@@ -242,7 +271,7 @@ def rasterize(out, browser):
     common = [str(browser), "--headless", "--disable-gpu", "--no-first-run",
               "--no-default-browser-check", "--disable-extensions", "--disable-background-networking",
               "--hide-scrollbars", f"--user-data-dir={profile}", "--no-pdf-header-footer"]
-    for name in ("module-drawing", "assembled"):
+    for name in ("module-drawing", "assembled", "rear", "exploded"):
         html = out / f"{name}.html"
         for ext in ("png", "pdf"):
             dest = out / f"{name}.{ext}"
@@ -262,7 +291,8 @@ def rasterize(out, browser):
 def run(out=OUTPUT, screenshots=False, browser=None):
     out = Path(out).resolve()
     out.mkdir(parents=True, exist_ok=True)
-    report = dict(model="clock_module_visual", units="mm", checks={})
+    report = dict(model="clock_module_visual", units="mm", checks={},
+                  hash_representation="Observed runtime/export bytes; preserved in release ZIP, not Git checkout text")
     print("Export and reimport module", flush=True)
     report["checks"]["module_step_roundtrip"] = export_in_child("module", out)
     for name in TITLES:
@@ -317,8 +347,10 @@ if __name__ == "__main__":
         out.mkdir(parents=True, exist_ok=True)
         parts = make_module()
         if args.step_only != "module":
-            housing = make_family()[args.step_only]["parts"]
-            parts = {**{f"housing_{n}": p for n, p in housing.items()}, **parts}
+            family = make_family()[args.step_only]
+            housing = family["parts"]
+            parts = {**{f"housing_{n}": p for n, p in housing.items()},
+                     **family.get("hardware", {}), **parts}
         name = "module.step" if args.step_only == "module" else f"{args.step_only}-assembled.step"
         result = export_checked(parts, out / name)
         (out / f"{args.step_only}-step-check.json").write_text(json.dumps(result), encoding="utf-8")
