@@ -1,0 +1,132 @@
+{
+  "snapshot_date": "2026-11-18",
+  "units": "mm",
+  "issue": "https://github.com/Kwentin3/build123d/issues/1",
+  "code_commit": "fa1d6ff14a87517639276ef7dedd405ce2ed7077",
+  "source_sha256": {
+    "drawings.py": "fbe20cc0eb3f48d13cd7d491093ffc1fe48728e82922b17c5ec53bf080983808",
+    "experiment.py": "6f0c50e85f95edfe3c3665720a8c83a2b316d4aaa79c0d5782c8b25c4e4cdc19",
+    "interface.py": "c4bed6ee4800ebcdc9ed918741b006bf397714914d48581615e19bfce749160f",
+    "model.py": "b01a263f44de23cc1debcadfdfa66f4773fce553e73150814e6950601434c6ed",
+    "README.md": "41b230f79d9751be36aab11e6f80576d804263f5ed1deb3ab73db8cce764d65f",
+    "SOURCES.md": "a7aadc01f6305a32c0399d90621dfc235fa53d35d7e0915cb77a6499b686e421",
+    "test_exports.py": "9e8c4e823dff73d0d74972c3e439908b26c2019a9daf45fc36e6833fb89ab7be",
+    "test_validation.py": "327bb849aa8ed58d3d5905c7a32e8acbe56b4ba640a22356e6bb632ad090728e",
+    "validation.py": "83dfb0be21b654e4c9d5862e21e9c35816172f5842e292eeeaf2cf0075c7f408"
+  },
+  "dependency_sha256": {
+    "requirements.txt": "f9d15754f3c8a6596000e976b7ccbf45a6342f713d1a01b116636b67568867e2"
+  },
+  "environment": {
+    "build123d": "0.13.0",
+    "cadquery-ocp-novtk": "8.0.1.1.0",
+    "ocp-vscode": "4.2.0",
+    "pytest": "9.2.0"
+  },
+  "nominal_cad": {
+    "baseline": {
+      "status": "PASS",
+      "checks": {
+        "PASS": 109,
+        "FAIL": 0,
+        "NOT_CHECKED": 18
+      },
+      "report_sha256": "9c8f1bb0e0d5faf43d12d50f92b58d97bad1d17d9cde79d9eeeb861cebad4352"
+    },
+    "change": {
+      "status": "PASS",
+      "checks": {
+        "PASS": 108,
+        "FAIL": 0,
+        "NOT_CHECKED": 18
+      },
+      "report_sha256": "e6d0bca3d3d2bbdf2eb2b3e726ceb6643c0f101a552980453ea609292de65652"
+    }
+  },
+  "auxiliary_step_roundtrips": {
+    "baseline/desk": {
+      "status": "PASS",
+      "unexpected_mm3": 0
+    },
+    "baseline/wall": {
+      "status": "PASS",
+      "unexpected_mm3": 0
+    },
+    "baseline/portable": {
+      "status": "PASS",
+      "unexpected_mm3": 0
+    },
+    "change/desk": {
+      "status": "PASS",
+      "unexpected_mm3": 0
+    },
+    "change/wall": {
+      "status": "PASS",
+      "unexpected_mm3": 0
+    },
+    "change/portable": {
+      "status": "PASS",
+      "unexpected_mm3": 0
+    }
+  },
+  "dependent_change": {
+    "status": "PASS",
+    "report_sha256": "33a63dc101b7b914ccf8006565108a8705a6f8e206ddcb27e0a516b0da4ece15",
+    "removed_per_body_mm3": 1611.0715446139475,
+    "unexplained_mm3": 0,
+    "protected_lid_unchanged": true,
+    "negative_cases": {
+      "unrelated_material_removed": true,
+      "wall_kept_old_bore": true
+    }
+  },
+  "regression": {
+    "tests": 125,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 426.192,
+    "junit_sha256": "7777c25676c8709ff596d4dadefaa28433941206e105a0551f5c7c216a19a3d7",
+    "clean_runtime_outputs": true,
+    "byte_identical_tracked_files": 84
+  },
+  "initial_local_regression": {
+    "passed": 124,
+    "failed": 1,
+    "seconds": 423.43,
+    "reason": "Pre-existing stale output/mangal_v21/previous_versions_sha256.json; both old sources unchanged since task start",
+    "junit_sha256": "902f7655b1a8f97b9456202b2055a877470fe41aab9705f018a1cb73173e3088"
+  },
+  "previous_files_preserved": {
+    "count": 333,
+    "changed": 0
+  },
+  "visual_review": {
+    "status": "PASS",
+    "scope": "Opened all seven baseline PNGs; geometry review only",
+    "sha256": {
+      "desk/preview.png": "ec963b2e01e785856eab677fa85aa438cc6e5023672b336ead005b863e5185a5",
+      "desk/viewer.png": "5d11038f41fcbb6a39dde0addb0f7f401f8d1129f12942492fd248660a0a3e34",
+      "overview.png": "4895e25e7f5d49c444fa33535eb960c63ee1e863b06e4fc7fe81d367150d17ad",
+      "portable/preview.png": "7500029456f5bce7f8edf58d96bab3ffd24dad0afb76f2fbf2d2b57655b7cef8",
+      "portable/viewer.png": "4eb865da4a11cd6cea86f598cabd3208cefd9f0deb982e4d79e1421411c06fd6",
+      "wall/preview.png": "9ecf70e13f5fb33bde7d4d626bbd813e47d289b00c83999143ad50f16fc6d2f4",
+      "wall/viewer.png": "333427d3def9b75d40998143c6dc95a7d52570ed5ad96cef80056a5ed8540705"
+    }
+  },
+  "production_approval": "NOT_CHECKED",
+  "physical_gaps": [
+    "OEM mounting-ring retention, real dimensions and tolerances",
+    "Physical battery/lid/control/fingertip access",
+    "FDM fit, strength, impact, heat, wall anchors and physical stability"
+  ],
+  "current_source_binding": true,
+  "source_binding_scope": "Snapshot bytes; check line endings after Git checkout",
+  "post_test_documentation_changes": [
+    "models/clock_family/README.md: correct actual temporary Chrome profile path"
+  ],
+  "artifact_sha256": {
+    "clock-family-prototype.zip": "e6088d91f393575a3bf67a8853124487b9f378baf79acc77d9739dc8ca98d9db",
+    "overview.png": "4895e25e7f5d49c444fa33535eb960c63ee1e863b06e4fc7fe81d367150d17ad"
+  }
+}

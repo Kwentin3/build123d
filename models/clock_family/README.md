@@ -94,7 +94,7 @@ M3 высотой ≤2.4 мм и размером под ключ 5.5 мм; от
 новую службу. Когда viewer недоступен, статус `NOT_CHECKED`; `--drawings`
 всё равно даёт HLR-проекции текущей BREP штатным build123d/Open Cascade.
 Вторая команда создаёт четыре PNG через установленный Chrome. Запускать её
-в managed executor; временный профиль `output/clock_family_preview_profile`
+в managed executor; временный профиль `output/clock_family/clock_family_preview_profile`
 убрать после подтверждённого завершения дерева Chrome. При наличии работающего
 viewer его свежие снимки также сохраняются отдельно.
 
